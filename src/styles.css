@@ -1,1 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+
+:root {
+  --chat-blue: #0dcaf0;
+  --chat-blue-dark: #09829f;
+  --chat-white: #f8f9fa;
+}
+
+* {
+  font-family: 'Trebuchet MS', sans-serif;
+}
+
