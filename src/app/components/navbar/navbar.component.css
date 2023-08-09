@@ -1,6 +1,8 @@
 .sidebar {
   background-color: var(--chat-blue-dark);
   padding: 20px;
+  position:relative;
+  box-shadow:  5px 5px 16px #b3b3b3, -5px -5px 16px #ffffff;
 }
 
 * {
@@ -14,9 +16,19 @@ h1 {
 
 h3 {
   font-size: 1.2em;
-  font-weight: bold;
 }
 
 .nav-item {
   font-size: 1.1em;
+}
+
+.sidebar-clickable:hover {
+  background: radial-gradient(circle, rgba(1, 69, 100, 0.45) 0%, rgba(0,177,39,0) 100%);
+  cursor: pointer;
+}
+
+.my-profile {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 15px;
 }

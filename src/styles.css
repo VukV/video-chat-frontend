@@ -2,7 +2,9 @@
 :root {
   --chat-blue: #0dcaf0;
   --chat-blue-dark: #09829f;
+  --chat-blue-darker: #04596b;
   --chat-white: #f8f9fa;
+  --chat-grey: #c5c5c5;
 }
 
 * {
