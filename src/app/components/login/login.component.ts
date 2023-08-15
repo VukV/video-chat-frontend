@@ -7,4 +7,18 @@ import { Component } from '@angular/core';
 })
 export class LoginComponent {
 
+  username: string = '';
+  password: string = '';
+  showPassword: boolean = false;
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  login() {
+    // Implement your login logic here
+    console.log('Username:', this.username);
+    console.log('Password:', this.password);
+  }
+
 }

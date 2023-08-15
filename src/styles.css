@@ -1,8 +1,9 @@
+@import 'bootstrap-icons/font/bootstrap-icons.css';
 
 :root {
-  --chat-blue: #0dcaf0;
+  --chat-blue: #0aabcb;
   --chat-blue-dark: #09829f;
-  --chat-blue-darker: #08738c;
+  --chat-blue-darker: #075e73;
   --chat-white: #f8f9fa;
   --chat-grey: #c5c5c5;
 }
@@ -10,4 +11,37 @@
 * {
   font-family: 'Trebuchet MS', sans-serif;
 }
+
+label {
+  color: var(--chat-blue-darker);
+}
+
+.button-main {
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 500px;
+  transition-property: background-color,border-color,color,box-shadow,filter;
+  transition-duration: .3s;
+  border: 1px solid transparent;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  white-space: normal;
+  font-weight: 700;
+  text-align: center;
+  padding: 12px 14px 12px;
+  color: var(--chat-white);
+  background-color: var(--chat-blue);
+}
+
+.button-main:hover{
+  background-color: var(--chat-blue-dark);
+}
+
+.button-outline {
+
+}
+
 

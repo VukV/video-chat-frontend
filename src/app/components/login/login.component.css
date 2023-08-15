@@ -1,0 +1,55 @@
+#login-main {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  background: linear-gradient(270deg, #00517c, #0098cb, #59c3e7, #08526b, #2fadd8);
+  background-size: 1000% 1000%;
+
+  -webkit-animation: GradientLogin 30s ease infinite;
+  -moz-animation: GradientLogin 30s ease infinite;
+  animation: GradientLogin 30s ease infinite;
+}
+
+@-webkit-keyframes GradientLogin {
+  0%{background-position:0% 51%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 51%}
+}
+@-moz-keyframes GradientLogin {
+  0%{background-position:0% 51%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 51%}
+}
+@keyframes GradientLogin {
+  0%{background-position:0% 51%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 51%}
+}
+
+#login-video-chat {
+  margin-top: 25%;
+}
+
+h1, h6 {
+  color: var(--chat-white);
+}
+
+#footer-diplomski {
+  text-align: center;
+  padding: 10px 0;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.button-main {
+  display: block;
+  margin: 0 auto;
+}
