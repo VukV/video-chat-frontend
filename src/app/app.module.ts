@@ -13,13 +13,18 @@ import {NgxSpinnerModule} from "ngx-spinner";
 import { LoadingComponent } from './components/loading/loading.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
+import {LottieModule} from "ngx-lottie";
+import player from 'lottie-web';
+import { HomeComponent } from './components/home/home.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     LoginComponent,
     MainComponent,
-    LoadingComponent
+    LoadingComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -28,9 +33,14 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    LottieModule.forRoot({player: playerFactory})
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function playerFactory() {
+  return player;
+}

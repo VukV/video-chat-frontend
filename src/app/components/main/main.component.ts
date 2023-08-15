@@ -25,4 +25,8 @@ export class MainComponent implements OnInit{
     this.userLetter = this.currentUserService.getFirstUserLetter();
   }
 
+  logout() {
+    this.currentUserService.logout();
+  }
+
 }

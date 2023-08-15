@@ -41,7 +41,17 @@ export class CurrentUserService {
     return decoded.userId;
   }
 
-  getFirstUserLetter(): string{
+  getUsername(): string {
+    let token = sessionStorage.getItem("jwt");
+    if(token == null){
+      return "";
+    }
+
+    let decoded = jwtDecode<JwtPayload>(token);
+    return decoded.sub;
+  }
+
+  getFirstUserLetter(): string {
     let token = sessionStorage.getItem("jwt");
     if(token == null){
       return "";

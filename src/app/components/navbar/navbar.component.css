@@ -21,9 +21,7 @@ h3 {
 .nav-item {
   font-size: 1.1em;
 }
-/*
-background: radial-gradient(circle, rgba(1, 69, 100, 0.45) 0%, rgba(0,177,39,0) 100%);
-*/
+
 .sidebar-clickable {
   padding: 5px;
 }
@@ -38,6 +36,7 @@ background: radial-gradient(circle, rgba(1, 69, 100, 0.45) 0%, rgba(0,177,39,0) 
   position: absolute;
   bottom: 0;
   margin-bottom: 15px;
+  font-size: 1.1em;
 }
 
 #navbar-users {
