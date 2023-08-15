@@ -8,19 +8,27 @@ import {NgOptimizedImage} from "@angular/common";
 import { LoginComponent } from './components/login/login.component';
 import {FormsModule} from "@angular/forms";
 import { MainComponent } from './components/main/main.component';
+import {HttpClientModule} from "@angular/common/http";
+import {NgxSpinnerModule} from "ngx-spinner";
+import { LoadingComponent } from './components/loading/loading.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     LoginComponent,
-    MainComponent
+    MainComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgOptimizedImage,
-    FormsModule
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    NgxSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

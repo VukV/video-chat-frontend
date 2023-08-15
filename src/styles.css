@@ -3,9 +3,10 @@
 :root {
   --chat-blue: #0aabcb;
   --chat-blue-dark: #09829f;
-  --chat-blue-darker: #075e73;
+  --chat-blue-darker: #076e86;
   --chat-white: #f8f9fa;
   --chat-grey: #c5c5c5;
+  --chat-red: #a40000;
 }
 
 * {
@@ -54,4 +55,7 @@ label {
   background-color: var(--chat-blue);
 }
 
-
+.error-text {
+  color: var(--chat-red);
+  min-height: 24px;
+}
