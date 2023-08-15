@@ -16,7 +16,7 @@ label {
   color: var(--chat-blue-darker);
 }
 
-.button-main {
+.button-main, .button-outline {
   display: inline-block;
   outline: none;
   cursor: pointer;
@@ -25,13 +25,16 @@ label {
   border-radius: 500px;
   transition-property: background-color,border-color,color,box-shadow,filter;
   transition-duration: .3s;
-  border: 1px solid transparent;
   letter-spacing: 2px;
   text-transform: uppercase;
   white-space: normal;
   font-weight: 700;
   text-align: center;
   padding: 12px 14px 12px;
+}
+
+.button-main {
+  border: 1px solid transparent;
   color: var(--chat-white);
   background-color: var(--chat-blue);
 }
@@ -41,7 +44,14 @@ label {
 }
 
 .button-outline {
+  border: 2px solid;
+  color: var(--chat-blue);
+  background-color: transparent;
+}
 
+.button-outline:hover{
+  color: var(--chat-white);
+  background-color: var(--chat-blue);
 }
 
 
