@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CurrentUserService} from "../../services/current-user.service";
 import {Router} from "@angular/router";
+import {ComponentType} from "../../model/component-type";
 
 @Component({
   selector: 'app-main',
@@ -11,6 +12,8 @@ export class MainComponent implements OnInit{
 
   isLoggedIn: boolean = false;
   userLetter: string = "";
+
+  componentType: ComponentType = ComponentType.HOME;
 
   constructor(private currentUserService: CurrentUserService, private router: Router) {
   }
@@ -29,4 +32,5 @@ export class MainComponent implements OnInit{
     this.currentUserService.logout();
   }
 
+  protected readonly ComponentType = ComponentType;
 }

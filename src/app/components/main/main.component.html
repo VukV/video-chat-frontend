@@ -9,8 +9,10 @@
           <button type="button" class="button-outline" (click)="logout()">Logout</button>
         </div>
       </nav>
-      <app-home></app-home>
-      AAAAAA DODAJ COMPONENT SWITCHER
+      <ng-container [ngSwitch]="componentType">
+        <app-home *ngSwitchCase="ComponentType.HOME"></app-home>
+        <app-chat *ngSwitchCase="ComponentType.CHAT"></app-chat>
+      </ng-container>
     </div>
   </div>
 </div>

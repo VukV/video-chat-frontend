@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CurrentUserService} from "../../services/current-user.service";
+import {CurrentUserService} from "../../../services/current-user.service";
 
 @Component({
   selector: 'app-navbar',

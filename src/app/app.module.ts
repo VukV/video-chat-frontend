@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './components/app/app.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
+import { NavbarComponent } from './components/main/navbar/navbar.component';
 import {NgOptimizedImage} from "@angular/common";
 import { LoginComponent } from './components/login/login.component';
 import {FormsModule} from "@angular/forms";
@@ -15,7 +15,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 import {LottieModule} from "ngx-lottie";
 import player from 'lottie-web';
-import { HomeComponent } from './components/home/home.component';
+import { HomeComponent } from './components/main/chat/home/home.component';
+import { ChatComponent } from './components/main/chat/chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { HomeComponent } from './components/home/home.component';
     LoginComponent,
     MainComponent,
     LoadingComponent,
-    HomeComponent
+    HomeComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
