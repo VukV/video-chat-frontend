@@ -2,7 +2,7 @@ import {CanActivateFn, Router} from '@angular/router';
 import {CurrentUserService} from "../services/current-user.service";
 import {inject} from "@angular/core";
 import jwtDecode from "jwt-decode";
-import {JwtPayload} from "../model/jwt-payload";
+import {JwtPayload} from "../model/login/jwt-payload";
 
 export const loginGuard: CanActivateFn = (route, state) => {
   const currentUserService: CurrentUserService = inject(CurrentUserService);

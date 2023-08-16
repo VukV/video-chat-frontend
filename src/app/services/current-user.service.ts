@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Router} from "@angular/router";
 import {BehaviorSubject} from "rxjs";
-import {JwtPayload} from "../model/jwt-payload";
+import {JwtPayload} from "../model/login/jwt-payload";
 import jwtDecode from "jwt-decode";
 
 @Injectable({

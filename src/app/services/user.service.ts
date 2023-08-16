@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {CurrentUserService} from "./current-user.service";
 import {environment} from "../../environments/environment";
 import {catchError, Observable, throwError} from "rxjs";
-import {LoginResponse} from "../model/login-response";
+import {LoginResponse} from "../model/login/login-response";
 
 
 @Injectable({
@@ -39,6 +39,10 @@ export class UserService {
           return throwError(() => new Error(err.error.message))
         })
       );
+  }
+
+  search() {
+
   }
 
 }

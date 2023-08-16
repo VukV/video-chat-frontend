@@ -29,8 +29,11 @@ export class AddContactComponent {
   }
 
   search() {
-    //fetch from server
-    console.log(this.usernameSearch);
+    if(this.usernameSearch == ''){
+      return;
+    }
+
+    //todo fetch users
   }
 
   open() {
