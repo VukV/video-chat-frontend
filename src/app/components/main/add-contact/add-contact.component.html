@@ -1,0 +1,24 @@
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Find Contacts</h5>
+        <button type="button" class="btn-close" (click)="close()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Search for contacts..." [(ngModel)]="usernameSearch" (ngModelChange)="onSearchInput()">
+        </div>
+
+        <div class="mb-3 text-center">
+          <img *ngIf="loading" ngSrc="assets/loaders/three-dots.svg" width="45" height="11">
+        </div>
+        <!-- Add your search results table or list here -->
+
+        <div class="mb-3 text-center">
+          <p class="error-text"> {{ errorText }} </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

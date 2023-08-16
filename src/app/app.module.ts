@@ -17,6 +17,7 @@ import {LottieModule} from "ngx-lottie";
 import player from 'lottie-web';
 import { HomeComponent } from './components/main/chat/home/home.component';
 import { ChatComponent } from './components/main/chat/chat/chat.component';
+import { AddContactComponent } from './components/main/add-contact/add-contact.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ChatComponent } from './components/main/chat/chat/chat.component';
     MainComponent,
     LoadingComponent,
     HomeComponent,
-    ChatComponent
+    ChatComponent,
+    AddContactComponent
   ],
   imports: [
     BrowserModule,
