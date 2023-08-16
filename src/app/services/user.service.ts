@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {CurrentUserService} from "./current-user.service";
 import {environment} from "../../environments/environment";
 import {catchError, Observable, throwError} from "rxjs";
 import {LoginResponse} from "../model/login/login-response";
+import {UserSearch} from "../model/user/user-search";
 
 
 @Injectable({
@@ -41,8 +42,30 @@ export class UserService {
       );
   }
 
-  search() {
+  search(username: string, page: number, size: number): Observable<UserSearch> {
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("username", username);
+    queryParams = queryParams.append("page", page);
+    queryParams = queryParams.append("size", size);
 
+    return this.httpClient.get<UserSearch>(this.usersUrl,
+      {
+        headers: this.headers,
+        params: queryParams
+      })
+      .pipe(
+        catchError(err => {
+          return throwError(() => new Error(err.error.message))
+        })
+      );
+  }
+
+  sendRequest() {
+    //TODO
+  }
+
+  handleRequest() {
+    //TODO
   }
 
 }

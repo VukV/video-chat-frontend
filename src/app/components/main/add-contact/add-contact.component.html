@@ -13,7 +13,24 @@
         <div class="mb-3 text-center">
           <img *ngIf="loading" ngSrc="assets/loaders/three-dots.svg" width="45" height="11">
         </div>
-        <!-- Add your search results table or list here -->
+
+        <div class="mb-3 justify-content-center">
+          <table class="table table-borderless">
+            <tbody>
+            <tr *ngFor="let user of users">
+              <td class="td-user"> {{ user.username }} ({{ user.firstName }})</td>
+              <td class="text-end">
+                <i class="bi bi-plus-circle icon-blue"
+                   (click)="sendRequest()"
+                   id="request-icon"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="top"
+                   title="Send request"></i>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
 
         <div class="mb-3 text-center">
           <p class="error-text"> {{ errorText }} </p>

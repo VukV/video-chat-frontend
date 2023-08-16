@@ -1,5 +1,5 @@
 h5 {
-  color: var(--chat-blue-dark);
+  color: var(--chat-blue-darker);
 }
 
 .modal {
@@ -7,9 +7,21 @@ h5 {
 }
 
 .modal-content {
-  border-color: var(--chat-blue-dark);
+  border-color: var(--chat-blue-darker);
 }
 
 .modal-body {
   min-height: 200px;
+}
+
+.td-user {
+  color: var(--chat-blue-darker);
+}
+
+.icon-blue {
+  color: var(--chat-blue-dark);
+}
+
+.icon-blue:hover {
+  cursor: pointer;
 }
