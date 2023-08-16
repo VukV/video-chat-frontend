@@ -29,7 +29,9 @@ export class AddContactComponent implements OnInit {
 
   ngOnInit(): void {
     let tooltipElement = document.getElementById('request-icon');
-    return new bootstrap.Tooltip(tooltipElement);
+    if(tooltipElement){
+      return new bootstrap.Tooltip(tooltipElement);
+    }
   }
 
   onSearchInput() {
