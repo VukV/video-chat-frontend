@@ -42,3 +42,15 @@ h3 {
 #navbar-users {
   max-height: 80%;
 }
+
+.online-status, .offline-status {
+  margin-right: 10px;
+}
+
+.online-status {
+  color: lawngreen;
+}
+
+.offline-contact, .offline-status {
+  color: var(--chat-grey);
+}

@@ -8,6 +8,7 @@ h5 {
 
 .modal-content {
   border-color: var(--chat-blue-darker);
+  margin-top: 100px;
 }
 
 .modal-body {

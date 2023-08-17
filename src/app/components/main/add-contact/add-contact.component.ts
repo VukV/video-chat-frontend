@@ -35,17 +35,19 @@ export class AddContactComponent implements OnInit {
   }
 
   onSearchInput() {
+    if(this.usernameSearch == ''){
+      return;
+    }
+    this.users = [];
+    this.loading = true;
+
     this.searchSubject.next();
   }
 
   search() {
     this.errorText = '';
-    if(this.usernameSearch == ''){
-      return;
-    }
 
     //TODO page, size
-    this.loading = true;
     this.userService.search(this.usernameSearch, 0, 10).subscribe({
       complete: () => {
 

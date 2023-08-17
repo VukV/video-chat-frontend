@@ -5,6 +5,7 @@ import {environment} from "../../environments/environment";
 import {catchError, Observable, throwError} from "rxjs";
 import {LoginResponse} from "../model/login/login-response";
 import {UserSearch} from "../model/user/user-search";
+import {User} from "../model/user/user";
 
 
 @Injectable({
@@ -52,6 +53,18 @@ export class UserService {
       {
         headers: this.headers,
         params: queryParams
+      })
+      .pipe(
+        catchError(err => {
+          return throwError(() => new Error(err.error.message))
+        })
+      );
+  }
+
+  getMyContacts(): Observable<User[]> {
+    return this.httpClient.get<User[]>(this.usersUrl + '/contacts',
+      {
+        headers: this.headers
       })
       .pipe(
         catchError(err => {
