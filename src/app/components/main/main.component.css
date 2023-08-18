@@ -1,3 +1,20 @@
 #sidenav {
   padding: 0 !important;
 }
+
+.envelope-icon {
+  margin-right: 12px;
+  font-size: 2em;
+}
+
+.envelope-icon:hover {
+  cursor: pointer;
+}
+
+.envelope-empty {
+  color: var(--chat-blue);
+}
+
+.envelope-requests {
+  color: var(--chat-red);
+}

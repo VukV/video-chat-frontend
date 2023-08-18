@@ -3,7 +3,7 @@ import {CurrentUserService} from "../../../services/current-user.service";
 import {AddContactComponent} from "../add-contact/add-contact.component";
 import {UserService} from "../../../services/user.service";
 import {User} from "../../../model/user/user";
-import {LoadingComponent} from "../../loading/loading.component";
+import {LoadingComponent} from "../../utils/loading/loading.component";
 
 @Component({
   selector: 'app-navbar',
@@ -29,11 +29,11 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.username = this.currentUserService.getUsername();
-    this.getMyContacts();
+    this.getUserContacts();
   }
 
-  getMyContacts() {
-    this.userService.getMyContacts().subscribe({
+  getUserContacts() {
+    this.userService.getUserContacts().subscribe({
       complete: () => {
 
       },

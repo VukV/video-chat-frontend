@@ -61,7 +61,7 @@ export class UserService {
       );
   }
 
-  getMyContacts(): Observable<User[]> {
+  getUserContacts(): Observable<User[]> {
     return this.httpClient.get<User[]>(this.usersUrl + '/contacts',
       {
         headers: this.headers
@@ -71,14 +71,6 @@ export class UserService {
           return throwError(() => new Error(err.error.message))
         })
       );
-  }
-
-  sendRequest() {
-    //TODO
-  }
-
-  handleRequest() {
-    //TODO
   }
 
 }

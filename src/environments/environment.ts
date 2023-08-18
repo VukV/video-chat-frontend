@@ -1,4 +1,5 @@
 export const environment = {
   loginUrl: "",
-  usersUrl: ""
+  usersUrl: "",
+  contactRequestsUrl: ""
 };

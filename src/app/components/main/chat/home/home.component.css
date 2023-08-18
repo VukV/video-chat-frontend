@@ -1,5 +1,10 @@
-.home-animation {
-  margin-top: 60px;
+.camera-icon {
+  color: var(--chat-blue-dark);
+  font-size: 14em;
+}
+
+.camera-row {
+  margin-top: 100px;
 }
 
 .lottie {

@@ -28,6 +28,10 @@ export class AddContactComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initTooltip();
+  }
+
+  private initTooltip() {
     let tooltipElement = document.getElementById('request-icon');
     if(tooltipElement){
       return new bootstrap.Tooltip(tooltipElement);

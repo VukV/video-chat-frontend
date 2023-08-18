@@ -10,14 +10,12 @@ import {FormsModule} from "@angular/forms";
 import { MainComponent } from './components/main/main.component';
 import {HttpClientModule} from "@angular/common/http";
 import {NgxSpinnerModule} from "ngx-spinner";
-import { LoadingComponent } from './components/loading/loading.component';
+import { LoadingComponent } from './components/utils/loading/loading.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-
-import {LottieModule} from "ngx-lottie";
-import player from 'lottie-web';
 import { HomeComponent } from './components/main/chat/home/home.component';
 import { ChatComponent } from './components/main/chat/chat/chat.component';
 import { AddContactComponent } from './components/main/add-contact/add-contact.component';
+import { ToastComponent } from './components/utils/toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +26,8 @@ import { AddContactComponent } from './components/main/add-contact/add-contact.c
     LoadingComponent,
     HomeComponent,
     ChatComponent,
-    AddContactComponent
+    AddContactComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,
@@ -37,14 +36,9 @@ import { AddContactComponent } from './components/main/add-contact/add-contact.c
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NgxSpinnerModule,
-    LottieModule.forRoot({player: playerFactory})
+    NgxSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
-export function playerFactory() {
-  return player;
-}

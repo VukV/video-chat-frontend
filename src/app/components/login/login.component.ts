@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {CurrentUserService} from "../../services/current-user.service";
-import {LoadingComponent} from "../loading/loading.component";
+import {LoadingComponent} from "../utils/loading/loading.component";
 import {Router} from "@angular/router";
 
 @Component({

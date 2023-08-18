@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import {AnimationOptions} from "ngx-lottie";
 
 @Component({
   selector: 'app-home',
@@ -7,9 +6,5 @@ import {AnimationOptions} from "ngx-lottie";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-
-  options: AnimationOptions = {
-    path: '/assets/animations/home-animation.json',
-  }
 
 }

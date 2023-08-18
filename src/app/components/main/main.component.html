@@ -4,15 +4,23 @@
       <app-navbar></app-navbar>
     </div>
     <div class="col-10">
-      <nav class="navbar justify-content-end">
-        <div *ngIf="isLoggedIn">
+      <nav class="navbar d-flex justify-content-end align-items-center">
+        <div *ngIf="isLoggedIn" class="d-flex align-items-center">
+          <i *ngIf="contactRequests.length == 0; else requests" (click)="noRequestsInfo()" class="bi bi-envelope envelope-icon envelope-empty"></i>
+          <ng-template #requests>
+            <i class="bi bi-envelope-exclamation envelope-icon envelope-requests"></i>
+          </ng-template>
+
           <button type="button" class="button-outline" (click)="logout()">Logout</button>
         </div>
       </nav>
+
       <ng-container [ngSwitch]="componentType">
         <app-home *ngSwitchCase="ComponentType.HOME"></app-home>
         <app-chat *ngSwitchCase="ComponentType.CHAT"></app-chat>
       </ng-container>
+
+      <app-toast></app-toast>
     </div>
   </div>
 </div>
