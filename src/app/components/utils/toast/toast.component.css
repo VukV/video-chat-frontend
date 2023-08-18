@@ -1,3 +1,7 @@
 .header {
   color: var(--chat-blue-darker);
 }
+
+.toast-body {
+  color: var(--chat-blue-darker);
+}

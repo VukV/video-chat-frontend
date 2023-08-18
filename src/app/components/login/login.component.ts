@@ -39,12 +39,7 @@ export class LoginComponent {
       },
       error: (error) => {
         this.loadingComponent.stop();
-        if(error.message){
-          //TODO open popup with message
-        }
-        else {
-          //TODO open popup with fixed message
-        }
+        this.errorText = error.message;
       },
       next: (loginRes) => {
         this.currentUserService.login(loginRes.jwt);

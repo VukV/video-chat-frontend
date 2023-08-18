@@ -18,6 +18,7 @@ export class MainComponent implements OnInit{
   contactRequests: ContactRequest[] = [];
 
   componentType: ComponentType = ComponentType.HOME;
+  protected readonly ComponentType = ComponentType;
 
   @ViewChild(ToastComponent)
   toastComponent!: ToastComponent;
@@ -47,5 +48,4 @@ export class MainComponent implements OnInit{
     this.currentUserService.logout();
   }
 
-  protected readonly ComponentType = ComponentType;
 }

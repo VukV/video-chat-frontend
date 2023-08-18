@@ -17,11 +17,11 @@
         <div class="mb-3 justify-content-center">
           <table class="table table-borderless">
             <tbody>
-            <tr *ngFor="let user of users">
+            <tr *ngFor="let user of users | paginate: { totalItems: totalItems, itemsPerPage: 6, currentPage: page }">
               <td class="td-user"> {{ user.username }} ({{ user.firstName }})</td>
               <td class="text-end">
                 <i class="bi bi-plus-circle icon-blue"
-                   (click)="sendRequest()"
+                   (click)="sendRequest(user.username)"
                    id="request-icon"
                    data-bs-toggle="tooltip"
                    data-bs-placement="top"
@@ -35,7 +35,15 @@
         <div class="mb-3 text-center">
           <p class="error-text"> {{ errorText }} </p>
         </div>
+
+        <div *ngIf="totalItems > 0" class="row justify-content-center">
+          <div class="col-md-auto pagination-div">
+            <pagination-controls (pageChange)="pageChangeEvent($event)" nextLabel="Next" previousLabel="Prev"></pagination-controls>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
+  <app-toast></app-toast>
 </div>

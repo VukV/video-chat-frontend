@@ -5,6 +5,7 @@ import {environment} from "../../environments/environment";
 import {User} from "../model/user/user";
 import {catchError, Observable, throwError} from "rxjs";
 import {ContactRequest} from "../model/contact-request/contact-request";
+import {ExceptionMessages} from "../model/exception-messages";
 
 @Injectable({
   providedIn: 'root'
@@ -34,13 +35,29 @@ export class ContactRequestService {
       })
       .pipe(
         catchError(err => {
-          return throwError(() => new Error(err.error.message))
+          let message = ExceptionMessages.GET_REQUESTS_ERROR;
+          if(err.error){
+            message = err.error.message;
+          }
+          return throwError(() => new Error(message));
         })
       );
   }
 
-  sendRequest() {
-    //TODO
+  sendRequest(username: string): Observable<any> {
+    return this.httpClient.post(this.contactRequestsUrl + '/' + username, { },
+      {
+        headers: this.headers
+      })
+      .pipe(
+        catchError(err => {
+          let message = ExceptionMessages.SEND_REQUEST_ERROR;
+          if(err.error){
+            message = err.error.message;
+          }
+          return throwError(() => new Error(message));
+        })
+      );
   }
 
   handleRequest() {

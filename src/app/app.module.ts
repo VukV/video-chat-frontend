@@ -16,6 +16,7 @@ import { HomeComponent } from './components/main/chat/home/home.component';
 import { ChatComponent } from './components/main/chat/chat/chat.component';
 import { AddContactComponent } from './components/main/add-contact/add-contact.component';
 import { ToastComponent } from './components/utils/toast/toast.component';
+import {NgxPaginationModule} from "ngx-pagination";
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { ToastComponent } from './components/utils/toast/toast.component';
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    NgxPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

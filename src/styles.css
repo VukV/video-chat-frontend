@@ -60,3 +60,17 @@ label {
   color: var(--chat-red);
   min-height: 24px;
 }
+
+.ngx-pagination .current {
+  border: transparent;
+  border-radius: 20px;
+}
+
+.pagination-div {
+  display: flex;
+  justify-content: center;
+}
+
+.ngx-pagination {
+  padding-left: 0;
+}

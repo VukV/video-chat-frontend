@@ -6,6 +6,7 @@ import {catchError, Observable, throwError} from "rxjs";
 import {LoginResponse} from "../model/login/login-response";
 import {UserSearch} from "../model/user/user-search";
 import {User} from "../model/user/user";
+import {ExceptionMessages} from "../model/exception-messages";
 
 
 @Injectable({
@@ -38,7 +39,12 @@ export class UserService {
       })
       .pipe(
         catchError(err => {
-          return throwError(() => new Error(err.error.message))
+          console.log(err);
+          let message = ExceptionMessages.LOGIN_ERROR;
+          if(err.error){
+            message = err.error.message;
+          }
+          return throwError(() => new Error(message));
         })
       );
   }
@@ -56,7 +62,11 @@ export class UserService {
       })
       .pipe(
         catchError(err => {
-          return throwError(() => new Error(err.error.message))
+          let message = ExceptionMessages.USER_SEARCH_ERROR;
+          if(err.error){
+            message = err.error.message;
+          }
+          return throwError(() => new Error(message));
         })
       );
   }
@@ -68,7 +78,11 @@ export class UserService {
       })
       .pipe(
         catchError(err => {
-          return throwError(() => new Error(err.error.message))
+          let message = ExceptionMessages.GET_CONTACTS_ERROR;
+          if(err.error){
+            message = err.error.message;
+          }
+          return throwError(() => new Error(message));
         })
       );
   }

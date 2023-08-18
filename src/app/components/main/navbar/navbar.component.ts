@@ -4,6 +4,8 @@ import {AddContactComponent} from "../add-contact/add-contact.component";
 import {UserService} from "../../../services/user.service";
 import {User} from "../../../model/user/user";
 import {LoadingComponent} from "../../utils/loading/loading.component";
+import {retry} from "rxjs";
+import {ToastComponent} from "../../utils/toast/toast.component";
 
 @Component({
   selector: 'app-navbar',
@@ -24,6 +26,9 @@ export class NavbarComponent implements OnInit {
   @ViewChild(LoadingComponent)
   loadingComponent!: LoadingComponent;
 
+  @ViewChild(ToastComponent)
+  toastComponent!: ToastComponent;
+
   constructor(private currentUserService: CurrentUserService, private userService: UserService) {
   }
 
@@ -35,16 +40,11 @@ export class NavbarComponent implements OnInit {
   getUserContacts() {
     this.userService.getUserContacts().subscribe({
       complete: () => {
-
+        this.loadingComponent.stop();
       },
       error: (error) => {
-        this.loadingComponent.stop();
-        if(error.message){
-          //TODO open popup with message
-        }
-        else {
-          //TODO open popup with fixed message
-        }
+        retry(3);
+        this.toastComponent.showToast(error.message);
       },
       next: (contacts) => {
         this.onlineContacts = contacts;

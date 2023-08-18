@@ -1,14 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {UserService} from "../../../services/user.service";
-import {debounceTime, fromEvent, Subject} from "rxjs";
+import {debounceTime, Subject} from "rxjs";
 import {User} from "../../../model/user/user";
+import {ContactRequestService} from "../../../services/contact-request.service";
+import {ToastComponent} from "../../utils/toast/toast.component";
 
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-add-contact',
   templateUrl: './add-contact.component.html',
-  styleUrls: ['./add-contact.component.css']
+  styleUrls: ['./add-contact.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AddContactComponent implements OnInit {
 
@@ -21,7 +24,13 @@ export class AddContactComponent implements OnInit {
   private searchSubject: Subject<void> = new Subject<void>();
   users: User[] = [];
 
-  constructor(private userService: UserService) {
+  page: number = 1;
+  totalItems: number = 0;
+
+  @ViewChild(ToastComponent)
+  toastComponent!: ToastComponent;
+
+  constructor(private userService: UserService, private contactRequestService: ContactRequestService) {
     this.searchSubject.pipe(debounceTime(300)).subscribe(() => {
       this.search();
     });
@@ -51,29 +60,43 @@ export class AddContactComponent implements OnInit {
   search() {
     this.errorText = '';
 
-    //TODO page, size
-    this.userService.search(this.usernameSearch, 0, 10).subscribe({
+    this.userService.search(this.usernameSearch, this.page - 1, 6).subscribe({
       complete: () => {
 
       },
       error: (error) => {
         this.loading = false;
-        if(error.message){
-          this.errorText = error.message;
-        }
-        else {
-          this.errorText = 'Error while fetching users.';
-        }
+        this.errorText = error.message;
       },
       next: (users) => {
         this.users = users.content;
+        this.totalItems = users.totalElements;
         this.loading = false;
       }
     });
   }
 
-  sendRequest() {
-    //TODO
+  pageChangeEvent(event: number){
+    this.page = event;
+    this.search();
+  }
+
+  sendRequest(username: string) {
+    this.errorText = '';
+
+    this.contactRequestService.sendRequest(username).subscribe({
+      complete: () => {
+
+      },
+      error: (error) => {
+        this.loading = false;
+        this.errorText = error.message;
+      },
+      next: () => {
+        this.loading = false;
+        this.toastComponent.showToast("Contact request sent.");
+      }
+    });
   }
 
   open() {
