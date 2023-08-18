@@ -17,7 +17,7 @@
   <div id="navbar-users" class="overflow-auto">
     <div class="sidebar-online">
       <ul class="navbar-nav">
-        <li *ngFor="let contact of onlineContacts" class="nav-item sidebar-clickable">
+        <li *ngFor="let contact of onlineContacts" (click)="openChat(contact.username)" class="nav-item sidebar-clickable">
           <i class="online-status bi bi-check-circle"></i>
           {{ contact.username }} | {{ contact.firstName }}
         </li>

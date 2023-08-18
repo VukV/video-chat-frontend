@@ -16,6 +16,7 @@ export class MainComponent implements OnInit{
   isLoggedIn: boolean = false;
   userLetter: string = "";
 
+  currentChatUsername: string = '';
   contactRequests: ContactRequest[] = [];
 
   componentType: ComponentType = ComponentType.HOME;
@@ -35,11 +36,12 @@ export class MainComponent implements OnInit{
 
   setHomeComponent() {
     this.componentType = ComponentType.HOME;
+    this.currentChatUsername = '';
   }
 
   setChatComponent(username: string) {
     this.componentType = ComponentType.CHAT;
-    this.chatComponent.setUser(username);
+    this.currentChatUsername = username;
   }
 
   setVideoComponent() {

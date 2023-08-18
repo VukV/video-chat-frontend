@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {MainComponent} from "../../main.component";
 
 @Component({
   selector: 'app-chat',
@@ -9,17 +10,18 @@ export class ChatComponent implements OnInit{
 
   chatContactUsername: string = '';
 
+  @Input()
+  mainComponent!: MainComponent;
+
   constructor() {
   }
 
   ngOnInit(): void {
-    //todo
+    this.chatContactUsername = this.mainComponent.currentChatUsername;
   }
 
-  setUser(username: string) {
-    this.chatContactUsername = username;
-
-    //todo
+  closeChat() {
+    this.mainComponent.setHomeComponent();
   }
 
 }

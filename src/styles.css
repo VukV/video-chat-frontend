@@ -68,7 +68,7 @@ label {
 }
 
 .ngx-pagination .current:hover {
-  background: var(--chat-blue-dark);
+  background: var(--chat-blue-dark) !important;
 }
 
 .pagination-div {

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {CurrentUserService} from "../../../services/current-user.service";
 import {AddContactComponent} from "../add-contact/add-contact.component";
 import {UserService} from "../../../services/user.service";
@@ -6,6 +6,7 @@ import {User} from "../../../model/user/user";
 import {LoadingComponent} from "../../utils/loading/loading.component";
 import {retry} from "rxjs";
 import {ToastrService} from "ngx-toastr";
+import {MainComponent} from "../main.component";
 
 @Component({
   selector: 'app-navbar',
@@ -19,6 +20,9 @@ export class NavbarComponent implements OnInit {
   //TODO
   onlineContacts: User[] = [];
   offlineContacts: User[] = [];
+
+  @Input()
+  mainComponent!: MainComponent;
 
   @ViewChild(AddContactComponent)
   addContactComponent!: AddContactComponent;
@@ -52,6 +56,10 @@ export class NavbarComponent implements OnInit {
 
   openAddContact() {
     this.addContactComponent.open();
+  }
+
+  openChat(username: string) {
+    this.mainComponent.setChatComponent(username);
   }
 
 }

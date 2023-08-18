@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <div id="sidenav" class="col-2">
-      <app-navbar></app-navbar>
+      <app-navbar [mainComponent]="this"></app-navbar>
     </div>
     <div class="col-10">
       <nav class="navbar d-flex justify-content-end align-items-center">
@@ -17,7 +17,7 @@
 
       <ng-container [ngSwitch]="componentType">
         <app-home *ngSwitchCase="ComponentType.HOME"></app-home>
-        <app-chat *ngSwitchCase="ComponentType.CHAT"></app-chat>
+        <app-chat *ngSwitchCase="ComponentType.CHAT" [mainComponent]="this"></app-chat>
       </ng-container>
 
     </div>
