@@ -62,8 +62,13 @@ label {
 }
 
 .ngx-pagination .current {
+  background: var(--chat-blue) !important;
   border: transparent;
   border-radius: 20px;
+}
+
+.ngx-pagination .current:hover {
+  background: var(--chat-blue-dark);
 }
 
 .pagination-div {
@@ -73,4 +78,13 @@ label {
 
 .ngx-pagination {
   padding-left: 0;
+}
+
+#toast-container > div{
+  box-shadow: none;
+}
+
+#toast-container > div:hover {
+  box-shadow:  5px 5px 10px #dcdcdc,
+  -5px -5px 10px #e4e4e4;
 }

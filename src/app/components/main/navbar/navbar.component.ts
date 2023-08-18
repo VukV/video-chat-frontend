@@ -5,7 +5,7 @@ import {UserService} from "../../../services/user.service";
 import {User} from "../../../model/user/user";
 import {LoadingComponent} from "../../utils/loading/loading.component";
 import {retry} from "rxjs";
-import {ToastComponent} from "../../utils/toast/toast.component";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-navbar',
@@ -26,10 +26,7 @@ export class NavbarComponent implements OnInit {
   @ViewChild(LoadingComponent)
   loadingComponent!: LoadingComponent;
 
-  @ViewChild(ToastComponent)
-  toastComponent!: ToastComponent;
-
-  constructor(private currentUserService: CurrentUserService, private userService: UserService) {
+  constructor(private currentUserService: CurrentUserService, private userService: UserService, private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
@@ -44,7 +41,7 @@ export class NavbarComponent implements OnInit {
       },
       error: (error) => {
         retry(3);
-        this.toastComponent.showToast(error.message);
+        this.toastr.error(error.message)
       },
       next: (contacts) => {
         this.onlineContacts = contacts;

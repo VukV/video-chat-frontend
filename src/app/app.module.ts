@@ -15,8 +15,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { HomeComponent } from './components/main/chat/home/home.component';
 import { ChatComponent } from './components/main/chat/chat/chat.component';
 import { AddContactComponent } from './components/main/add-contact/add-contact.component';
-import { ToastComponent } from './components/utils/toast/toast.component';
 import {NgxPaginationModule} from "ngx-pagination";
+import {ToastrModule} from "ngx-toastr";
 
 @NgModule({
   declarations: [
@@ -27,8 +27,7 @@ import {NgxPaginationModule} from "ngx-pagination";
     LoadingComponent,
     HomeComponent,
     ChatComponent,
-    AddContactComponent,
-    ToastComponent
+    AddContactComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +37,14 @@ import {NgxPaginationModule} from "ngx-pagination";
     HttpClientModule,
     BrowserAnimationsModule,
     NgxSpinnerModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    ToastrModule.forRoot({
+      closeButton: true,
+      progressBar: true,
+      tapToDismiss: false,
+      timeOut: 4000,
+      positionClass: 'toast-bottom-right',
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

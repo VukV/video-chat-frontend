@@ -3,7 +3,7 @@ import {UserService} from "../../../services/user.service";
 import {debounceTime, Subject} from "rxjs";
 import {User} from "../../../model/user/user";
 import {ContactRequestService} from "../../../services/contact-request.service";
-import {ToastComponent} from "../../utils/toast/toast.component";
+import {ToastrService} from "ngx-toastr";
 
 declare var bootstrap: any;
 
@@ -27,10 +27,7 @@ export class AddContactComponent implements OnInit {
   page: number = 1;
   totalItems: number = 0;
 
-  @ViewChild(ToastComponent)
-  toastComponent!: ToastComponent;
-
-  constructor(private userService: UserService, private contactRequestService: ContactRequestService) {
+  constructor(private userService: UserService, private contactRequestService: ContactRequestService, private toastr: ToastrService) {
     this.searchSubject.pipe(debounceTime(300)).subscribe(() => {
       this.search();
     });
@@ -94,7 +91,7 @@ export class AddContactComponent implements OnInit {
       },
       next: () => {
         this.loading = false;
-        this.toastComponent.showToast("Contact request sent.");
+        this.toastr.info("Contact request sent.");
       }
     });
   }

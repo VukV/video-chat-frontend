@@ -3,8 +3,8 @@ import {CurrentUserService} from "../../services/current-user.service";
 import {Router} from "@angular/router";
 import {ComponentType} from "../../model/component-type";
 import {ContactRequest} from "../../model/contact-request/contact-request";
-import {ToastComponent} from "../utils/toast/toast.component";
 import {ChatComponent} from "./chat/chat/chat.component";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-main',
@@ -21,13 +21,10 @@ export class MainComponent implements OnInit{
   componentType: ComponentType = ComponentType.HOME;
   protected readonly ComponentType = ComponentType;
 
-  @ViewChild(ToastComponent)
-  toastComponent!: ToastComponent;
-
   @ViewChild(ChatComponent)
   chatComponent!: ChatComponent;
 
-  constructor(private currentUserService: CurrentUserService, private router: Router) {
+  constructor(private currentUserService: CurrentUserService, private router: Router, private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
@@ -58,7 +55,7 @@ export class MainComponent implements OnInit{
   }
 
   noRequestsInfo(){
-    this.toastComponent.showToast("You don't have any requests.");
+    this.toastr.info("You don't have any requests.");
   }
 
   logout() {
