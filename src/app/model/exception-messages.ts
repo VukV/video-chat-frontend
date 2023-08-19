@@ -9,4 +9,6 @@ export class ExceptionMessages {
   public static SEND_REQUEST_ERROR: string = "Error while sending request.";
 
   public static GET_REQUESTS_ERROR: string = "Error while getting requests.";
+
+  public static HANDLE_REQUEST_ERROR: string = "Error while processing request.";
 }

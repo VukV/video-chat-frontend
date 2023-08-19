@@ -44,8 +44,8 @@ export class ContactRequestService {
       );
   }
 
-  sendRequest(username: string): Observable<any> {
-    return this.httpClient.post(this.contactRequestsUrl + '/' + username, { },
+  sendRequest(username: string): Observable<void> {
+    return this.httpClient.post<void>(this.contactRequestsUrl + '/' + username, { },
       {
         headers: this.headers
       })
@@ -60,7 +60,23 @@ export class ContactRequestService {
       );
   }
 
-  handleRequest() {
-    //TODO
+  handleRequest(requestId: number, accepted: boolean): Observable<void> {
+    return this.httpClient.post<void>(this.contactRequestsUrl + '/handle',
+      {
+        requestId: requestId,
+        accepted: accepted
+      },
+      {
+        headers: this.headers
+      })
+      .pipe(
+        catchError(err => {
+          let message = ExceptionMessages.HANDLE_REQUEST_ERROR;
+          if(err.error){
+            message = err.error.message;
+          }
+          return throwError(() => new Error(message));
+        })
+      );
   }
 }

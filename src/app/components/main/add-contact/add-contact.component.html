@@ -17,7 +17,7 @@
         <div class="mb-3 justify-content-center">
           <table class="table table-borderless">
             <tbody>
-            <tr *ngFor="let user of users | paginate: { totalItems: totalItems, itemsPerPage: 6, currentPage: page }">
+            <tr *ngFor="let user of users | paginate: { totalItems: totalItems, itemsPerPage: pageSize, currentPage: page }">
               <td class="td-user"> {{ user.username }} ({{ user.firstName }})</td>
               <td class="text-end">
                 <i class="bi bi-plus-circle icon-blue"

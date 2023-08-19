@@ -61,14 +61,16 @@ label {
   min-height: 24px;
 }
 
-.ngx-pagination .current {
+.ngx-pagination .current, .btn-info {
   background: var(--chat-blue) !important;
   border: transparent;
   border-radius: 20px;
 }
 
-.ngx-pagination .current:hover {
-  background: var(--chat-blue-dark) !important;
+.ngx-pagination a:hover{
+  background: var(--chat-blue) !important;
+  border-radius: 20px;
+  border: transparent;
 }
 
 .pagination-div {

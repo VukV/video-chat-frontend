@@ -26,6 +26,7 @@ export class AddContactComponent implements OnInit {
 
   page: number = 1;
   totalItems: number = 0;
+  pageSize: number = 4;
 
   constructor(private userService: UserService, private contactRequestService: ContactRequestService, private toastr: ToastrService) {
     this.searchSubject.pipe(debounceTime(300)).subscribe(() => {
@@ -57,7 +58,7 @@ export class AddContactComponent implements OnInit {
   search() {
     this.errorText = '';
 
-    this.userService.search(this.usernameSearch, this.page - 1, 6).subscribe({
+    this.userService.search(this.usernameSearch, this.page - 1, this.pageSize).subscribe({
       complete: () => {
 
       },
