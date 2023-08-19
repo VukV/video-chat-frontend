@@ -1,5 +1,9 @@
 export const environment = {
   loginUrl: "",
   usersUrl: "",
-  contactRequestsUrl: ""
+  contactRequestsUrl: "",
+  pusher: {
+    key: "",
+    cluster: ""
+  }
 };

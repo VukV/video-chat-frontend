@@ -27,7 +27,7 @@
 
     <div class="sidebar-offline">
       <ul class="navbar-nav">
-        <li class="nav-item sidebar-clickable offline-contact">
+        <li *ngFor="let contact of offlineContacts" (click)="openChat(contact.username)" class="nav-item sidebar-clickable offline-contact">
           <i class="offline-status bi bi-dash-circle"></i>
           Test
         </li>
