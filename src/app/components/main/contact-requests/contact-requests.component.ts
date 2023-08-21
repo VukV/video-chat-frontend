@@ -47,7 +47,11 @@ export class ContactRequestsComponent {
   }
 
   private removeContactRequest(requestId: number) {
-    //todo
+    let requestIndex = this.contactRequests.findIndex(r => r.requestId === requestId);
+
+    if(requestIndex !== -1) {
+      this.contactRequests.splice(requestIndex, 1);
+    }
 
     if(this.contactRequests.length == 0) {
       this.close();

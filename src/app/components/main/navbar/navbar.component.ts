@@ -44,10 +44,10 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.getUserContacts();
+    this.getInitialContacts();
   }
 
-  getUserContacts() {
+  getInitialContacts() {
     this.loadingComponent.start();
 
     this.userService.getUserContacts().subscribe({
@@ -66,6 +66,14 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
         this.subscribeToChannels();
       }
     });
+  }
+
+  private contactAcceptedHandler(newContact: User) {
+    this.toastr.info(newContact.username + " is your new contact.");
+
+    this.channels.push(newContact.userId);
+    this.offlineContacts.push(newContact);
+    this.pusherService.subscribeToPresenceChannel(newContact.userId);
   }
 
   private subscribeToChannels() {
@@ -94,6 +102,10 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
 
     this.presenceChannel.bind('pusher:member_removed', (data: any) => {
       this.moveToOffline(data.info.username);
+    });
+
+    this.presenceChannel.bind('accepted_request', (data: any) => {
+      this.contactAcceptedHandler(data);
     });
   }
 
