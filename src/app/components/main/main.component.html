@@ -8,7 +8,7 @@
         <div *ngIf="isLoggedIn" class="d-flex align-items-center">
           <i *ngIf="contactRequests.length == 0; else requests" (click)="noRequestsInfo()" class="bi bi-envelope envelope-icon envelope-empty"></i>
           <ng-template #requests>
-            <i class="bi bi-envelope-exclamation envelope-icon envelope-requests"></i>
+            <i (click)="openContactRequests()" class="bi bi-envelope-exclamation envelope-icon envelope-requests"></i>
           </ng-template>
 
           <button type="button" class="button-outline" (click)="logout()">Logout</button>
@@ -19,6 +19,8 @@
         <app-home *ngSwitchCase="ComponentType.HOME"></app-home>
         <app-chat *ngSwitchCase="ComponentType.CHAT" [mainComponent]="this"></app-chat>
       </ng-container>
+
+      <app-contact-requests></app-contact-requests>
 
     </div>
   </div>

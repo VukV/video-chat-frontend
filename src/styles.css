@@ -18,7 +18,7 @@ label {
   color: var(--chat-blue-darker);
 }
 
-.button-main, .button-outline {
+.button-main, .button-outline, .button-red {
   display: inline-block;
   outline: none;
   cursor: pointer;
@@ -54,6 +54,16 @@ label {
 .button-outline:hover{
   color: var(--chat-white);
   background-color: var(--chat-blue);
+}
+
+.button-red {
+  border: 1px solid transparent;
+  color: var(--chat-white);
+  background-color: var(--chat-red);
+}
+
+.button-red:hover {
+  background-color: var(--chat-red-bright);
 }
 
 .error-text {

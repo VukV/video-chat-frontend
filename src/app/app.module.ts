@@ -17,6 +17,7 @@ import { ChatComponent } from './components/main/chat/chat/chat.component';
 import { AddContactComponent } from './components/main/add-contact/add-contact.component';
 import {NgxPaginationModule} from "ngx-pagination";
 import {ToastrModule} from "ngx-toastr";
+import { ContactRequestsComponent } from './components/main/contact-requests/contact-requests.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import {ToastrModule} from "ngx-toastr";
     LoadingComponent,
     HomeComponent,
     ChatComponent,
-    AddContactComponent
+    AddContactComponent,
+    ContactRequestsComponent
   ],
   imports: [
     BrowserModule,

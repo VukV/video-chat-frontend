@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CurrentUserService} from "../../../services/current-user.service";
 import {AddContactComponent} from "../add-contact/add-contact.component";
 import {UserService} from "../../../services/user.service";
@@ -10,17 +10,17 @@ import {MainComponent} from "../main.component";
 import {PusherService} from "../../../services/pusher.service";
 import Pusher from "pusher-js";
 import {ExceptionMessages} from "../../../model/exception-messages";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit, OnDestroy {
+export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
 
   username: string = '';
 
-  //TODO
   onlineContacts: User[] = [];
   offlineContacts: User[] = [];
 
@@ -41,10 +41,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.username = this.currentUserService.getUsername();
+  }
+
+  ngAfterViewInit(): void {
     this.getUserContacts();
   }
 
   getUserContacts() {
+    this.loadingComponent.start();
+
     this.userService.getUserContacts().subscribe({
       complete: () => {
         this.loadingComponent.stop();

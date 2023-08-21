@@ -87,11 +87,9 @@ export class AddContactComponent implements OnInit {
 
       },
       error: (error) => {
-        this.loading = false;
         this.errorText = error.message;
       },
       next: () => {
-        this.loading = false;
         this.toastr.info("Contact request sent.");
       }
     });

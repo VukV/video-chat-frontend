@@ -1,23 +1,26 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CurrentUserService} from "../../services/current-user.service";
 import {Router} from "@angular/router";
 import {ComponentType} from "../../model/component-type";
 import {ContactRequest} from "../../model/contact-request/contact-request";
 import {ChatComponent} from "./chat/chat/chat.component";
 import {ToastrService} from "ngx-toastr";
+import {interval, retry, Subscription, switchMap, timer} from "rxjs";
+import {ContactRequestService} from "../../services/contact-request.service";
+import {ContactRequestsComponent} from "./contact-requests/contact-requests.component";
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent implements OnInit{
+export class MainComponent implements OnInit, OnDestroy {
 
   isLoggedIn: boolean = false;
-  userLetter: string = "";
 
   currentChatUsername: string = '';
   contactRequests: ContactRequest[] = [];
+  requestsSubscription!: Subscription;
 
   componentType: ComponentType = ComponentType.HOME;
   protected readonly ComponentType = ComponentType;
@@ -25,13 +28,18 @@ export class MainComponent implements OnInit{
   @ViewChild(ChatComponent)
   chatComponent!: ChatComponent;
 
-  constructor(private currentUserService: CurrentUserService, private router: Router, private toastr: ToastrService) {
+  @ViewChild(ContactRequestsComponent)
+  contactRequestsComponent!: ContactRequestsComponent;
+
+  constructor(private currentUserService: CurrentUserService, private contactRequestService: ContactRequestService, private router: Router, private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
     this.currentUserService.isLoggedIn.subscribe((loggedIn) => {
       this.isLoggedIn = loggedIn;
     });
+
+    this.getUserRequests();
   }
 
   setHomeComponent() {
@@ -48,12 +56,25 @@ export class MainComponent implements OnInit{
     this.componentType = ComponentType.VIDEO;
   }
 
-  getUserLetter(){
-    this.userLetter = this.currentUserService.getFirstUserLetter();
+  getUserRequests() {
+    this.requestsSubscription = timer(0, 2 * 60 * 1000)
+      .pipe(
+        switchMap(() => this.contactRequestService.getMyRequests())
+      ).subscribe({
+        complete: () => {
+
+        },
+        error: (error) => {
+          this.toastr.error(error.message)
+        },
+        next: (requests) => {
+          this.contactRequests = requests;
+        }
+      });
   }
 
-  getUserRequests() {
-    //TODO
+  openContactRequests() {
+    this.contactRequestsComponent.open(this.contactRequests);
   }
 
   noRequestsInfo(){
@@ -62,6 +83,12 @@ export class MainComponent implements OnInit{
 
   logout() {
     this.currentUserService.logout();
+  }
+
+  ngOnDestroy(): void {
+    if(this.requestsSubscription) {
+      this.requestsSubscription.unsubscribe();
+    }
   }
 
 }

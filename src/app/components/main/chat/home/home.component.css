@@ -1,10 +1,14 @@
 .camera-icon {
   color: var(--chat-blue-dark);
-  font-size: 14em;
+  font-size: 15em;
 }
 
 .camera-row {
   margin-top: 100px;
+}
+
+.camera-col {
+  max-height: 300px;
 }
 
 .lottie {
