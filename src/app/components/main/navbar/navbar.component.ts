@@ -54,7 +54,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.toastr.error(error.message)
       },
       next: (contacts) => {
-        this.onlineContacts = contacts;
+        this.offlineContacts = contacts;
         this.loadingComponent.stop();
 
         this.initChannelList();
@@ -84,30 +84,53 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
 
     this.presenceChannel.bind('pusher:member_added', (data: any) => {
-      console.log('Member added:', data);
+      this.moveToOnline(data.info.username);
     });
 
     this.presenceChannel.bind('pusher:member_removed', (data: any) => {
-      console.log('Member removed:', data);
+      this.moveToOffline(data.info.username);
     });
   }
 
   private initChannelList() {
-    for(let contact of this.onlineContacts) {
+    for(let contact of this.offlineContacts) {
       this.channels.push(contact.userId);
     }
   }
 
   private checkForOnlineContacts() {
-    console.log(this.presenceChannel.members);
+    let onlineList = this.presenceChannel.members;
+
+    for (let memberId in onlineList.members) {
+      let username = onlineList.members[memberId].username;
+      this.moveToOnline(username);
+    }
   }
 
-  private moveToOnline() {
+  private moveToOnline(username: string) {
+    if(username === this.currentUserService.getUsername()) {
+      return;
+    }
 
+    let contactIndex = this.offlineContacts.findIndex(c => c.username === username);
+
+    if (contactIndex !== -1) {
+      let userToMove = this.offlineContacts.splice(contactIndex, 1)[0];
+      this.onlineContacts.push(userToMove);
+    }
   }
 
-  private moveToOffline() {
+  private moveToOffline(username: string) {
+    if(username === this.currentUserService.getUsername()) {
+      return;
+    }
 
+    let contactIndex = this.onlineContacts.findIndex(c => c.username === username);
+
+    if (contactIndex !== -1) {
+      let userToMove = this.onlineContacts.splice(contactIndex, 1)[0];
+      this.offlineContacts.push(userToMove);
+    }
   }
 
   openAddContact() {
