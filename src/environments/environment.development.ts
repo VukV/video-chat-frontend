@@ -4,6 +4,7 @@ export const environment = {
   contactRequestsUrl: "http://localhost:8080/api/contact-requests",
   pusher: {
     key: "",
-    cluster: ""
+    cluster: "eu",
+    authUrl: "http://localhost:8080/api/auth/pusher"
   }
 };

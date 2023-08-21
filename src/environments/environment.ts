@@ -4,6 +4,7 @@ export const environment = {
   contactRequestsUrl: "",
   pusher: {
     key: "",
-    cluster: ""
+    cluster: "",
+    authUrl: ""
   }
 };

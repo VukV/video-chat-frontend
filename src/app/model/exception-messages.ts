@@ -11,4 +11,6 @@ export class ExceptionMessages {
   public static GET_REQUESTS_ERROR: string = "Error while getting requests.";
 
   public static HANDLE_REQUEST_ERROR: string = "Error while processing request.";
+
+  public static PUSHER_SOCKET_ERROR: string = "Error while connecting to channel.";
 }
