@@ -35,9 +35,14 @@
     </div>
   </div>
 
-  <div class="my-profile">
-    <i class="bi bi-person-circle"></i>
-    {{ username }}
+  <div class="row justify-content-between bottom-section">
+    <div class="col-md-auto my-profile">
+      <i class="bi bi-person-circle"></i>
+      {{ username }}
+    </div>
+    <div class="col-md-auto gear-icon">
+      <i (click)="openSettings()" class="bi bi-gear"></i>
+    </div>
   </div>
 
 </nav>

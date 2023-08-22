@@ -8,6 +8,7 @@ import {ToastrService} from "ngx-toastr";
 import {interval, retry, Subscription, switchMap, timer} from "rxjs";
 import {ContactRequestService} from "../../services/contact-request.service";
 import {ContactRequestsComponent} from "./contact-requests/contact-requests.component";
+import {CallComponent} from "./chat/call/call.component";
 
 @Component({
   selector: 'app-main',
@@ -27,6 +28,10 @@ export class MainComponent implements OnInit, OnDestroy {
 
   @ViewChild(ChatComponent)
   chatComponent!: ChatComponent;
+
+  @ViewChild(CallComponent)
+  callComponent!: CallComponent;
+  private videoCall: boolean = false;
 
   @ViewChild(ContactRequestsComponent)
   contactRequestsComponent!: ContactRequestsComponent;
@@ -52,8 +57,13 @@ export class MainComponent implements OnInit, OnDestroy {
     this.currentChatUsername = username;
   }
 
-  setVideoComponent() {
-    this.componentType = ComponentType.VIDEO;
+  setCallComponent(videoCall: boolean) {
+    this.componentType = ComponentType.CALL;
+    this.videoCall = videoCall;
+  }
+
+  isVideoCall() {
+    return this.videoCall;
   }
 
   getUserRequests() {

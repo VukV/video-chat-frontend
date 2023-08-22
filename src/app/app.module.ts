@@ -18,6 +18,7 @@ import { AddContactComponent } from './components/main/add-contact/add-contact.c
 import {NgxPaginationModule} from "ngx-pagination";
 import {ToastrModule} from "ngx-toastr";
 import { ContactRequestsComponent } from './components/main/contact-requests/contact-requests.component';
+import { CallComponent } from './components/main/chat/call/call.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { ContactRequestsComponent } from './components/main/contact-requests/con
     HomeComponent,
     ChatComponent,
     AddContactComponent,
-    ContactRequestsComponent
+    ContactRequestsComponent,
+    CallComponent
   ],
   imports: [
     BrowserModule,

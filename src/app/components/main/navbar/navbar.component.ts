@@ -78,10 +78,7 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private subscribeToChannels() {
     this.presenceChannel = this.pusherService.subscribeToPresenceChannel(this.currentUserService.getUserId());
-
-    for(let contactId of this.channels) {
-      this.pusherService.subscribeToPresenceChannel(contactId);
-    }
+    this.subscribeToContactChannels();
 
     this.bindChannel();
   }
@@ -112,6 +109,12 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   private initChannelList() {
     for(let contact of this.offlineContacts) {
       this.channels.push(contact.userId);
+    }
+  }
+
+  private async subscribeToContactChannels() {
+    for(let contactId of this.channels) {
+      this.pusherService.subscribeToPresenceChannel(contactId);
     }
   }
 
@@ -156,6 +159,10 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
 
   openChat(username: string) {
     this.mainComponent.setChatComponent(username);
+  }
+
+  openSettings() {
+    //TODO
   }
 
   ngOnDestroy() {

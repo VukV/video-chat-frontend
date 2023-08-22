@@ -24,4 +24,8 @@ export class ChatComponent implements OnInit{
     this.mainComponent.setHomeComponent();
   }
 
+  startCall(videoCall: boolean) {
+    this.mainComponent.setCallComponent(videoCall);
+  }
+
 }

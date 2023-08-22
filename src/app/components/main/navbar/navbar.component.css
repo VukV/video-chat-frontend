@@ -2,6 +2,8 @@
   background-color: var(--chat-blue-dark);
   padding: 20px;
   position:relative;
+  display: flex;
+  flex-direction: column;
   box-shadow:  5px 5px 16px #b3b3b3, -5px -5px 16px #ffffff;
 }
 
@@ -32,11 +34,16 @@ h3 {
   cursor: pointer;
 }
 
-.my-profile {
+.bottom-section {
   position: absolute;
   bottom: 0;
   margin-bottom: 15px;
-  font-size: 1.1em;
+  font-size: 1.25em;
+  min-width: 90%;
+}
+
+.gear-icon:hover {
+  cursor: pointer;
 }
 
 #navbar-users {

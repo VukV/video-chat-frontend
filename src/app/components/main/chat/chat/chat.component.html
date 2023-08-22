@@ -1,4 +1,16 @@
 <hr>
-<p>{{ chatContactUsername }}</p>
-<br>
-<p (click)="closeChat()">CLOSE</p>
+<div class="container">
+  <div class="row justify-content-between">
+    <div class="col-md-auto">
+      <p class="username">{{ chatContactUsername }}</p>
+    </div>
+    <div class="col-md-auto buttons-col">
+      <button (click)="startCall(false)" class="button-main"><i class="bi bi-telephone-fill"></i></button>
+      <button (click)="startCall(true)" class="button-main"><i class="bi bi-camera-video-fill"></i></button>
+      <button type="button" class="btn-close" (click)="closeChat()" aria-label="Close"></button>
+    </div>
+  </div>
+  <br>
+  AAA
+</div>
+

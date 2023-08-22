@@ -18,6 +18,7 @@
       <ng-container [ngSwitch]="componentType">
         <app-home *ngSwitchCase="ComponentType.HOME"></app-home>
         <app-chat *ngSwitchCase="ComponentType.CHAT" [mainComponent]="this"></app-chat>
+        <app-call *ngSwitchCase="ComponentType.CALL" [mainComponent]="this"></app-call>
       </ng-container>
 
       <app-contact-requests></app-contact-requests>
