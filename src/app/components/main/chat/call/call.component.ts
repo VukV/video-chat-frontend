@@ -14,6 +14,8 @@ export class CallComponent implements AfterViewInit {
   private remoteStream: any;
   private peerConnection: any;
 
+  //TODO: move constraints here?
+
   @Input()
   mainComponent!: MainComponent;
   private isCaller: boolean = true;
@@ -102,6 +104,12 @@ export class CallComponent implements AfterViewInit {
   private async addAnswer(answer: any) {
     if(this.peerConnection.currentRemoteDescription) {
       this.peerConnection.setRemoteDescription(answer);
+    }
+  }
+
+  private async addIceCandidate(candidate: any) {
+    if(this.peerConnection) {
+      this.peerConnection.addIceCandidate(candidate);
     }
   }
 

@@ -2,11 +2,14 @@ export const environment = {
   loginUrl: "",
   usersUrl: "",
   contactRequestsUrl: "",
+  rtcUrl: "",
+
   pusher: {
     key: "",
     cluster: "",
     authUrl: ""
   },
+
   rtc: {
     servers: {
       iceServers: [
