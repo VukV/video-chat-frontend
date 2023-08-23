@@ -11,6 +11,7 @@ import {PusherService} from "../../../services/pusher.service";
 import Pusher from "pusher-js";
 import {ExceptionMessages} from "../../../model/exception-messages";
 import {NgxSpinnerService} from "ngx-spinner";
+import {ComponentType} from "../../../model/component-type";
 
 @Component({
   selector: 'app-navbar',
@@ -168,5 +169,4 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   ngOnDestroy() {
     this.pusherService.disconnect();
   }
-
 }

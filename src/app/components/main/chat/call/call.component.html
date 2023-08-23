@@ -1,1 +1,23 @@
-<p>call works!</p>
+<div id="videos">
+  <video #localVideo class="video-player" id="local-video" autoplay playsinline></video>
+  <video #contactVideo class="video-player" id="contact-video" autoplay playsinline></video>
+</div>
+
+<div id="controls">
+  <button (click)="toggleCamera()" class="button-main">
+    <i *ngIf="usingCamera; else cameraOff" class="bi bi-camera-video-fill"></i>
+    <ng-template #cameraOff>
+      <i class="bi bi-camera-video-off-fill"></i>
+    </ng-template>
+  </button>
+  <button (click)="toggleMicrophone()" class="button-main">
+    <i *ngIf="usingMicrophone; else microphoneOff" class="bi bi-mic-fill"></i>
+    <ng-template #microphoneOff>
+      <i class="bi bi-mic-mute-fill"></i>
+    </ng-template>
+  </button>
+  <button class="button-red">
+    <i class="bi bi-telephone-x-fill"></i>
+  </button>
+</div>
+

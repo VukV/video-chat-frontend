@@ -24,7 +24,7 @@ export class MainComponent implements OnInit, OnDestroy {
   requestsSubscription!: Subscription;
 
   componentType: ComponentType = ComponentType.HOME;
-  protected readonly ComponentType = ComponentType;
+  readonly ComponentType = ComponentType;
 
   @ViewChild(ChatComponent)
   chatComponent!: ChatComponent;
@@ -35,6 +35,9 @@ export class MainComponent implements OnInit, OnDestroy {
 
   @ViewChild(ContactRequestsComponent)
   contactRequestsComponent!: ContactRequestsComponent;
+
+  navCol: string = '2';
+  mainCol: string = '10';
 
   constructor(private currentUserService: CurrentUserService, private contactRequestService: ContactRequestService, private router: Router, private toastr: ToastrService) {
   }
@@ -48,16 +51,19 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   setHomeComponent() {
+    this.resetColumns();
     this.componentType = ComponentType.HOME;
     this.currentChatUsername = '';
   }
 
   setChatComponent(username: string) {
+    this.resetColumns();
     this.componentType = ComponentType.CHAT;
     this.currentChatUsername = username;
   }
 
   setCallComponent(videoCall: boolean) {
+    this.setColumnsCall();
     this.componentType = ComponentType.CALL;
     this.videoCall = videoCall;
   }
@@ -99,6 +105,16 @@ export class MainComponent implements OnInit, OnDestroy {
     if(this.requestsSubscription) {
       this.requestsSubscription.unsubscribe();
     }
+  }
+
+  private setColumnsCall() {
+    this.navCol = '1';
+    this.mainCol = '11';
+  }
+
+  private resetColumns() {
+    this.navCol = '2';
+    this.mainCol = '10';
   }
 
 }

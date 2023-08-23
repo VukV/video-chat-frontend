@@ -61,3 +61,7 @@ h3 {
 .offline-contact, .offline-status {
   color: var(--chat-grey);
 }
+
+.sidebar-call {
+  max-width: min-content;
+}
