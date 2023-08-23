@@ -8,9 +8,13 @@ export const environment = {
     authUrl: "http://localhost:8080/api/auth/pusher"
   },
   rtc: {
-    iceServers: [
-      "", ""
-    ],
+    servers: {
+      iceServers: [
+        {
+          urls: ['', '']
+        }
+      ]
+    },
     constraints: {
       video: {
         width: { min:640, ideal:1920, max:1920 },

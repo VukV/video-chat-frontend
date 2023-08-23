@@ -7,12 +7,9 @@
 
 .video-player{
   background-color: black;
+  border:2px solid var(--chat-blue);
   width: 95%;
   object-fit: cover;
-}
-
-#contact-video {
-  display: none;
 }
 
 #controls{
@@ -24,4 +21,16 @@
   transform:translateX(-50%);
   display: flex;
   gap: 1em;
+}
+
+.small-frame {
+  position: fixed;
+  top: 100px;
+  right: 100px;
+  height: 170px;
+  width: 300px;
+  border-radius: 5px;
+  -webkit-box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.77);
+  box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.77);
+  z-index: 999;
 }
