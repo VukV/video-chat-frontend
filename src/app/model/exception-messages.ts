@@ -13,4 +13,6 @@ export class ExceptionMessages {
   public static HANDLE_REQUEST_ERROR: string = "Error while processing request.";
 
   public static PUSHER_SOCKET_ERROR: string = "Error while connecting to channel.";
+
+  public static PUSHER_RTC_ERROR: string = "Error while connecting to contact.";
 }

@@ -9,6 +9,7 @@ import {interval, retry, Subscription, switchMap, timer} from "rxjs";
 import {ContactRequestService} from "../../services/contact-request.service";
 import {ContactRequestsComponent} from "./contact-requests/contact-requests.component";
 import {CallComponent} from "./chat/call/call.component";
+import {RtcService} from "../../services/rtc.service";
 
 @Component({
   selector: 'app-main',
@@ -19,7 +20,6 @@ export class MainComponent implements OnInit, OnDestroy {
 
   isLoggedIn: boolean = false;
 
-  currentChatUsername: string = '';
   contactRequests: ContactRequest[] = [];
   requestsSubscription!: Subscription;
 
@@ -39,7 +39,7 @@ export class MainComponent implements OnInit, OnDestroy {
   navCol: string = '2';
   mainCol: string = '10';
 
-  constructor(private currentUserService: CurrentUserService, private contactRequestService: ContactRequestService, private router: Router, private toastr: ToastrService) {
+  constructor(private currentUserService: CurrentUserService, private contactRequestService: ContactRequestService, private router: Router, private toastr: ToastrService, private rtcService: RtcService) {
   }
 
   ngOnInit(): void {
@@ -53,17 +53,18 @@ export class MainComponent implements OnInit, OnDestroy {
   setHomeComponent() {
     this.resetColumns();
     this.componentType = ComponentType.HOME;
-    this.currentChatUsername = '';
+    this.rtcService.setContactUsername('');
   }
 
   setChatComponent(username: string) {
     this.resetColumns();
     this.componentType = ComponentType.CHAT;
-    this.currentChatUsername = username;
+    this.rtcService.setContactUsername(username);
   }
 
-  setCallComponent(videoCall: boolean) {
+  setCallComponent(videoCall: boolean, isCaller: boolean) {
     this.setColumnsCall();
+    this.rtcService.setCallerStatus(isCaller);
     this.componentType = ComponentType.CALL;
     this.videoCall = videoCall;
   }

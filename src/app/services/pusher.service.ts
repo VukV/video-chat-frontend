@@ -109,6 +109,31 @@ export class PusherService implements OnDestroy{
     this.presenceChannel.bind('accepted_request', (data: any) => {
       this.acceptedRequestBehavior.next(data);
     });
+
+    this.presenceChannel.bind('offer', (data: any) => {
+      console.log('offer');
+      //TODO
+    });
+
+    this.presenceChannel.bind('answer', (data: any) => {
+      console.log('answer');
+      //TODO
+    });
+
+    this.presenceChannel.bind('reject', (data: any) => {
+      console.log('reject');
+      //TODO
+    });
+
+    this.presenceChannel.bind('candidate', (data: any) => {
+      console.log('candidate');
+      //TODO
+    });
+
+    this.presenceChannel.bind('hang_up', (data: any) => {
+      console.log('hang up');
+      //TODO
+    });
   }
 
   private disconnect() {

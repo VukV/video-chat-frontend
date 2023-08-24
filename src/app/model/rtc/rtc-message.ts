@@ -16,5 +16,6 @@ export enum RTCMessageType {
   OFFER = 'OFFER',
   CANDIDATE = 'CANDIDATE',
   ANSWER = 'ANSWER',
-  REJECT = 'REJECT'
+  REJECT = 'REJECT',
+  HANG_UP = 'HANG_UP'
 }

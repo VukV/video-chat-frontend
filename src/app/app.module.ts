@@ -20,6 +20,7 @@ import {ToastrModule} from "ngx-toastr";
 import { ContactRequestsComponent } from './components/main/contact-requests/contact-requests.component';
 import { CallComponent } from './components/main/chat/call/call.component';
 import {PusherService} from "./services/pusher.service";
+import { IncomingCallComponent } from './components/main/incoming-call/incoming-call.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import {PusherService} from "./services/pusher.service";
     ChatComponent,
     AddContactComponent,
     ContactRequestsComponent,
-    CallComponent
+    CallComponent,
+    IncomingCallComponent
   ],
   imports: [
     BrowserModule,

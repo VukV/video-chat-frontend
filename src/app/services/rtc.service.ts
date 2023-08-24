@@ -13,6 +13,9 @@ export class RtcService {
 
   private rtcUrl: string = environment.rtcUrl;
 
+  private isCaller: boolean = true;
+  private contactUsername: string = '';
+
   private headers = new HttpHeaders({
     'Authorization': 'Bearer ' + sessionStorage.getItem("jwt")
   });
@@ -29,18 +32,34 @@ export class RtcService {
 
   sendMessage(type: RTCMessageType, data: any, sendTo: string) {
     let message = new RTCMessage(type, this.currentUserService.getUsername(), sendTo, data);
-    return this.httpClient.post(this.rtcUrl, message,
+    return this.httpClient.post(this.rtcUrl + '/message', message,
       {
         headers: this.headers
       })
       .pipe(
         catchError(err => {
-          let message = ExceptionMessages.SEND_REQUEST_ERROR;
+          let message = ExceptionMessages.PUSHER_RTC_ERROR;
           if(err.error){
             message = err.error.message;
           }
           return throwError(() => new Error(message));
         })
       );
+  }
+
+  setCallerStatus(isCaller: boolean) {
+    this.isCaller = isCaller;
+  }
+
+  getCallerStatus(): boolean {
+    return this.isCaller;
+  }
+
+  setContactUsername(username: string) {
+    this.contactUsername = username;
+  }
+
+  getContactUsername(): string {
+    return this.contactUsername;
   }
 }

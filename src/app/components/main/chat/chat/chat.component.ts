@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MainComponent} from "../../main.component";
+import {RtcService} from "../../../../services/rtc.service";
 
 @Component({
   selector: 'app-chat',
@@ -13,11 +14,11 @@ export class ChatComponent implements OnInit{
   @Input()
   mainComponent!: MainComponent;
 
-  constructor() {
+  constructor(private rtcService: RtcService) {
   }
 
   ngOnInit(): void {
-    this.chatContactUsername = this.mainComponent.currentChatUsername;
+    this.chatContactUsername = this.rtcService.getContactUsername();
   }
 
   closeChat() {
@@ -25,7 +26,7 @@ export class ChatComponent implements OnInit{
   }
 
   startCall(videoCall: boolean) {
-    this.mainComponent.setCallComponent(videoCall);
+    this.mainComponent.setCallComponent(videoCall, true);
   }
 
 }

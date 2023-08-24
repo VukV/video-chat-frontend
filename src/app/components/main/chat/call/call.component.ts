@@ -3,6 +3,7 @@ import {MainComponent} from "../../main.component";
 import {environment} from "../../../../../environments/environment";
 import {ToastrService} from "ngx-toastr";
 import {RTCMessageType} from "../../../../model/rtc/rtc-message";
+import {RtcService} from "../../../../services/rtc.service";
 
 @Component({
   selector: 'app-call',
@@ -20,6 +21,7 @@ export class CallComponent implements AfterViewInit {
   @Input()
   mainComponent!: MainComponent;
   private isCaller: boolean = true;
+  private contactUsername: string = '';
 
   @ViewChild('localVideo') localVideo!: ElementRef;
   @ViewChild('contactVideo') contactVideo!: ElementRef;
@@ -29,15 +31,20 @@ export class CallComponent implements AfterViewInit {
 
   displayStyle: string = 'none';
 
-  constructor(private toastr: ToastrService) {
+  constructor(private rtcService: RtcService, private toastr: ToastrService) {
   }
 
   ngAfterViewInit(): void {
+    this.isCaller = this.rtcService.getCallerStatus();
+    this.contactUsername = this.rtcService.getContactUsername();
+
     if(this.isCaller) {
       this.initLocalStream().then(() => this.createOffer());
     }
     else {
-      this.initLocalStream().then(() => {});
+      this.initLocalStream().then(() => {
+        console.log("PRIMAM POZIV");
+      });
     }
   }
 
@@ -78,7 +85,7 @@ export class CallComponent implements AfterViewInit {
 
     this.peerConnection.onicecandidate = async (event:any) => {
       if(event.candidate){
-        //TODO send candidate message
+        this.sendMessage(RTCMessageType.CANDIDATE, event.candidate);
       }
     }
   }
@@ -89,7 +96,7 @@ export class CallComponent implements AfterViewInit {
     let offer = await this.peerConnection.createOffer();
     await this.peerConnection.setLocalDescription(offer)
 
-    //TODO send offer message
+    this.sendMessage(RTCMessageType.OFFER, offer);
   }
 
   private async createAnswer(offer: any) {
@@ -99,7 +106,7 @@ export class CallComponent implements AfterViewInit {
     let answer = await this.peerConnection.createAnswer();
     await this.peerConnection.setLocalDescription(answer);
 
-    //TODO send answer message
+    this.sendMessage(RTCMessageType.ANSWER, answer);
   }
 
   private async addAnswer(answer: any) {
@@ -115,7 +122,17 @@ export class CallComponent implements AfterViewInit {
   }
 
   private sendMessage(type: RTCMessageType, data: any) {
+    this.rtcService.sendMessage(type, data, this.contactUsername).subscribe({
+      complete: () => {
 
+      },
+      error: (error) => {
+        this.toastr.error(error.message);
+      },
+      next: () => {
+
+      }
+    });
   }
 
   async toggleCamera() {
@@ -135,6 +152,13 @@ export class CallComponent implements AfterViewInit {
   private async disableCamera() {
     let videoTrack = this.localStream.getTracks().find((track: MediaStreamTrack) => track.kind === 'video');
     videoTrack.enabled = false;
+  }
+
+  leaveCall() {
+    this.localStream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
+    this.peerConnection.close();
+    this.sendMessage(RTCMessageType.HANG_UP, null);
+    this.mainComponent.setChatComponent(this.contactUsername);
   }
 
 }
