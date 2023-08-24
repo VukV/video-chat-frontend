@@ -19,6 +19,7 @@ import {NgxPaginationModule} from "ngx-pagination";
 import {ToastrModule} from "ngx-toastr";
 import { ContactRequestsComponent } from './components/main/contact-requests/contact-requests.component';
 import { CallComponent } from './components/main/chat/call/call.component';
+import {PusherService} from "./services/pusher.service";
 
 @NgModule({
   declarations: [
@@ -50,7 +51,7 @@ import { CallComponent } from './components/main/chat/call/call.component';
       positionClass: 'toast-bottom-right',
     })
   ],
-  providers: [],
+  providers: [PusherService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

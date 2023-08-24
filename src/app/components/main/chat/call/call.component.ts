@@ -2,6 +2,7 @@ import {AfterViewInit, Component, ElementRef, Input, ViewChild} from '@angular/c
 import {MainComponent} from "../../main.component";
 import {environment} from "../../../../../environments/environment";
 import {ToastrService} from "ngx-toastr";
+import {RTCMessageType} from "../../../../model/rtc/rtc-message";
 
 @Component({
   selector: 'app-call',
@@ -33,7 +34,7 @@ export class CallComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if(this.isCaller) {
-      this.initLocalStream().then(() => {});
+      this.initLocalStream().then(() => this.createOffer());
     }
     else {
       this.initLocalStream().then(() => {});
@@ -111,6 +112,10 @@ export class CallComponent implements AfterViewInit {
     if(this.peerConnection) {
       this.peerConnection.addIceCandidate(candidate);
     }
+  }
+
+  private sendMessage(type: RTCMessageType, data: any) {
+
   }
 
   async toggleCamera() {

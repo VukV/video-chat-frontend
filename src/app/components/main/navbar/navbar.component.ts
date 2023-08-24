@@ -12,21 +12,19 @@ import Pusher from "pusher-js";
 import {ExceptionMessages} from "../../../model/exception-messages";
 import {NgxSpinnerService} from "ngx-spinner";
 import {ComponentType} from "../../../model/component-type";
+import {isSubscription} from "rxjs/internal/Subscription";
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
+export class NavbarComponent implements AfterViewInit, OnInit {
 
   username: string = '';
 
   onlineContacts: User[] = [];
   offlineContacts: User[] = [];
-
-  private presenceChannel: any;
-  private channels: number[] = [];
 
   @Input()
   mainComponent!: MainComponent;
@@ -42,6 +40,7 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.username = this.currentUserService.getUsername();
+    this.initHandlers();
   }
 
   ngAfterViewInit(): void {
@@ -63,8 +62,34 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
         this.offlineContacts = contacts;
         this.loadingComponent.stop();
 
-        this.initChannelList();
-        this.subscribeToChannels();
+        this.pusherService.initChannelList(this.offlineContacts);
+        this.pusherService.subscribeToChannels();
+      }
+    });
+  }
+
+  initHandlers() {
+    this.pusherService.isSubscribed.subscribe((isSubscribed) => {
+      if(isSubscribed){
+        this.checkForOnlineContacts();
+      }
+    });
+
+    this.pusherService.onlineContact.subscribe((username) => {
+      if(username) {
+        this.contactOnlineHandler(username);
+      }
+    });
+
+    this.pusherService.offlineContact.subscribe((username) => {
+      if(username) {
+        this.contactOfflineHandler(username);
+      }
+    });
+
+    this.pusherService.acceptedRequest.subscribe((data) => {
+      if(data) {
+        this.contactAcceptedHandler(data);
       }
     });
   }
@@ -72,63 +97,21 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   private contactAcceptedHandler(newContact: User) {
     this.toastr.info(newContact.username + " is your new contact.");
 
-    this.channels.push(newContact.userId);
+    this.pusherService.addChannel(newContact.userId);
     this.offlineContacts.push(newContact);
     this.pusherService.subscribeToPresenceChannel(newContact.userId);
   }
 
-  private subscribeToChannels() {
-    this.presenceChannel = this.pusherService.subscribeToPresenceChannel(this.currentUserService.getUserId());
-    this.subscribeToContactChannels();
-
-    this.bindChannel();
-  }
-
-  private bindChannel() {
-    this.presenceChannel.bind("pusher:subscription_succeeded", () => {
-      console.log("Subscribed to channel.");
-      this.checkForOnlineContacts();
-    });
-
-    this.presenceChannel.bind("pusher:subscription_error", (error: any) => {
-      this.toastr.error(ExceptionMessages.PUSHER_SOCKET_ERROR);
-    });
-
-    this.presenceChannel.bind('pusher:member_added', (data: any) => {
-      this.moveToOnline(data.info.username);
-    });
-
-    this.presenceChannel.bind('pusher:member_removed', (data: any) => {
-      this.moveToOffline(data.info.username);
-    });
-
-    this.presenceChannel.bind('accepted_request', (data: any) => {
-      this.contactAcceptedHandler(data);
-    });
-  }
-
-  private initChannelList() {
-    for(let contact of this.offlineContacts) {
-      this.channels.push(contact.userId);
-    }
-  }
-
-  private async subscribeToContactChannels() {
-    for(let contactId of this.channels) {
-      this.pusherService.subscribeToPresenceChannel(contactId);
-    }
-  }
-
   private checkForOnlineContacts() {
-    let onlineList = this.presenceChannel.members;
+    let onlineList = this.pusherService.presenceChannel.members;
 
     for (let memberId in onlineList.members) {
       let username = onlineList.members[memberId].username;
-      this.moveToOnline(username);
+      this.contactOnlineHandler(username);
     }
   }
 
-  private moveToOnline(username: string) {
+  private contactOnlineHandler(username: string) {
     if(username === this.currentUserService.getUsername()) {
       return;
     }
@@ -141,7 +124,7 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
     }
   }
 
-  private moveToOffline(username: string) {
+  private contactOfflineHandler(username: string) {
     if(username === this.currentUserService.getUsername()) {
       return;
     }
@@ -166,7 +149,4 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
     //TODO
   }
 
-  ngOnDestroy() {
-    this.pusherService.disconnect();
-  }
 }
