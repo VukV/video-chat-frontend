@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {CurrentUserService} from "./current-user.service";
 import {environment} from "../../environments/environment";
 import {RTCMessage, RTCMessageType} from "../model/rtc/rtc-message";
-import {catchError, throwError} from "rxjs";
+import {catchError, of, throwError} from "rxjs";
 import {ExceptionMessages} from "../model/exception-messages";
 
 @Injectable({
@@ -15,6 +15,7 @@ export class RtcService {
 
   private isCaller: boolean = true;
   private contactUsername: string = '';
+  private currentOffer: any;
 
   private headers = new HttpHeaders({
     'Authorization': 'Bearer ' + sessionStorage.getItem("jwt")
@@ -61,5 +62,13 @@ export class RtcService {
 
   getContactUsername(): string {
     return this.contactUsername;
+  }
+
+  setOffer(offer: any) {
+    this.currentOffer = offer;
+  }
+
+  getOffer() {
+    return this.currentOffer;
   }
 }

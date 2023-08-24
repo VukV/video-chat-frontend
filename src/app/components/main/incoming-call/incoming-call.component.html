@@ -1,0 +1,20 @@
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row justify-content-center">
+          <div class="col-md-auto">
+            <button (click)="answerCall(false)" class="button-main"><i class="bi bi-telephone-fill"></i></button>
+          </div>
+          <div class="col-md-auto">
+            <button (click)="answerCall(true)" class="button-main"><i class="bi bi-camera-video-fill"></i></button>
+          </div>
+          <div class="col-md-auto">
+            <button (click)="rejectCall()" class="button-red"><i class="bi bi-telephone-x-fill"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

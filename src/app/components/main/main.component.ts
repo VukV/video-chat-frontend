@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CurrentUserService} from "../../services/current-user.service";
 import {Router} from "@angular/router";
 import {ComponentType} from "../../model/component-type";
@@ -10,13 +10,15 @@ import {ContactRequestService} from "../../services/contact-request.service";
 import {ContactRequestsComponent} from "./contact-requests/contact-requests.component";
 import {CallComponent} from "./chat/call/call.component";
 import {RtcService} from "../../services/rtc.service";
+import {IncomingCallComponent} from "./incoming-call/incoming-call.component";
+import {PusherService} from "../../services/pusher.service";
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent implements OnInit, OnDestroy {
+export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
 
   isLoggedIn: boolean = false;
 
@@ -33,13 +35,18 @@ export class MainComponent implements OnInit, OnDestroy {
   callComponent!: CallComponent;
   private videoCall: boolean = false;
 
+  @ViewChild(IncomingCallComponent)
+  incomingCallComponent!: IncomingCallComponent
+
   @ViewChild(ContactRequestsComponent)
   contactRequestsComponent!: ContactRequestsComponent;
 
   navCol: string = '2';
   mainCol: string = '10';
 
-  constructor(private currentUserService: CurrentUserService, private contactRequestService: ContactRequestService, private router: Router, private toastr: ToastrService, private rtcService: RtcService) {
+  constructor(private currentUserService: CurrentUserService, private contactRequestService: ContactRequestService,
+              private router: Router, private toastr: ToastrService, private rtcService: RtcService,
+              private pusherService: PusherService) {
   }
 
   ngOnInit(): void {
@@ -48,6 +55,18 @@ export class MainComponent implements OnInit, OnDestroy {
     });
 
     this.getUserRequests();
+  }
+
+  ngAfterViewInit(): void {
+    this.initHandlers();
+  }
+
+  initHandlers() {
+    this.pusherService.incomingCall.subscribe((message) => {
+      if(message) {
+        this.incomingCallComponent.open(message);
+      }
+    });
   }
 
   setHomeComponent() {

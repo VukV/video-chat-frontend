@@ -29,6 +29,12 @@ export class PusherService implements OnDestroy{
   private acceptedRequestBehavior: BehaviorSubject<any> = new BehaviorSubject(null);
   acceptedRequest = this.acceptedRequestBehavior.asObservable();
 
+  private incomingCallBehavior: BehaviorSubject<any> = new BehaviorSubject(null);
+  incomingCall = this.incomingCallBehavior.asObservable();
+
+  private rejectedCallBehavior: BehaviorSubject<any> = new BehaviorSubject(null);
+  rejectedCall = this.rejectedCallBehavior.asObservable();
+
   private headers = new HttpHeaders({
     'Authorization': 'Bearer ' + sessionStorage.getItem("jwt")
   });
@@ -110,9 +116,8 @@ export class PusherService implements OnDestroy{
       this.acceptedRequestBehavior.next(data);
     });
 
-    this.presenceChannel.bind('offer', (data: any) => {
-      console.log('offer');
-      //TODO
+    this.presenceChannel.bind('offer', (message: any) => {
+      this.incomingCallBehavior.next(message);
     });
 
     this.presenceChannel.bind('answer', (data: any) => {
@@ -122,7 +127,7 @@ export class PusherService implements OnDestroy{
 
     this.presenceChannel.bind('reject', (data: any) => {
       console.log('reject');
-      //TODO
+      this.rejectedCallBehavior.next(true);
     });
 
     this.presenceChannel.bind('candidate', (data: any) => {

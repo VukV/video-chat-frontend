@@ -4,6 +4,7 @@ import {environment} from "../../../../../environments/environment";
 import {ToastrService} from "ngx-toastr";
 import {RTCMessageType} from "../../../../model/rtc/rtc-message";
 import {RtcService} from "../../../../services/rtc.service";
+import {PusherService} from "../../../../services/pusher.service";
 
 @Component({
   selector: 'app-call',
@@ -31,7 +32,7 @@ export class CallComponent implements AfterViewInit {
 
   displayStyle: string = 'none';
 
-  constructor(private rtcService: RtcService, private toastr: ToastrService) {
+  constructor(private rtcService: RtcService, private pusherService: PusherService, private toastr: ToastrService) {
   }
 
   ngAfterViewInit(): void {
@@ -42,10 +43,10 @@ export class CallComponent implements AfterViewInit {
       this.initLocalStream().then(() => this.createOffer());
     }
     else {
-      this.initLocalStream().then(() => {
-        console.log("PRIMAM POZIV");
-      });
+      this.initLocalStream().then(() => this.createAnswer(this.rtcService.getOffer()));
     }
+
+    this.initHandlers();
   }
 
   private async initLocalStream() {
@@ -152,6 +153,14 @@ export class CallComponent implements AfterViewInit {
   private async disableCamera() {
     let videoTrack = this.localStream.getTracks().find((track: MediaStreamTrack) => track.kind === 'video');
     videoTrack.enabled = false;
+  }
+
+  private initHandlers() {
+    this.pusherService.rejectedCall.subscribe((rejected) => {
+      if(rejected) {
+        this.leaveCall();
+      }
+    });
   }
 
   leaveCall() {
