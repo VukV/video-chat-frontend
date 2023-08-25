@@ -186,13 +186,20 @@ export class CallComponent implements AfterViewInit {
           this.addIceCandidate(message.data);
         }
       }
-    })
+    });
+
+    this.pusherService.hangUp.subscribe((hangUp) => {
+      if(hangUp) {
+        this.disconnect();
+        this.close();
+      }
+    });
   }
 
   leaveCall() {
     this.disconnect();
     this.sendMessage(RTCMessageType.HANG_UP, null);
-    close();
+    this.close();
   }
 
   private disconnect() {

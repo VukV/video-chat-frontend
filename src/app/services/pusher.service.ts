@@ -42,6 +42,9 @@ export class PusherService implements OnDestroy{
   private rejectedCallBehavior: BehaviorSubject<any> = new BehaviorSubject(null);
   rejectedCall = this.rejectedCallBehavior.asObservable();
 
+  private hangUpBehavior: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  hangUp = this.hangUpBehavior.asObservable();
+
   private headers = new HttpHeaders({
     'Authorization': 'Bearer ' + sessionStorage.getItem("jwt")
   });
@@ -128,26 +131,22 @@ export class PusherService implements OnDestroy{
     });
 
     this.presenceChannel.bind('answer', (message: any) => {
-      console.log('answer');
       if(message.usernameFrom === this.rtcService.getContactUsername()) {
         this.answerBehavior.next(message);
       }
     });
 
     this.presenceChannel.bind('reject', (message: any) => {
-      console.log('reject');
       this.rejectedCallBehavior.next(true);
     });
 
     this.presenceChannel.bind('candidate', (message: any) => {
-      console.log('candidate');
       this.rtcService.addCandidate(message);
       this.candidateBehavior.next(message);
     });
 
     this.presenceChannel.bind('hang_up', (message: any) => {
-      console.log('hang up');
-      //TODO
+      this.hangUpBehavior.next(true);
     });
   }
 
