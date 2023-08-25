@@ -7,6 +7,7 @@ import {User} from "../model/user/user";
 import {ExceptionMessages} from "../model/exception-messages";
 import {BehaviorSubject} from "rxjs";
 import {ToastrService} from "ngx-toastr";
+import {RtcService} from "./rtc.service";
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,12 @@ export class PusherService implements OnDestroy{
   private incomingCallBehavior: BehaviorSubject<any> = new BehaviorSubject(null);
   incomingCall = this.incomingCallBehavior.asObservable();
 
+  private answerBehavior: BehaviorSubject<any> = new BehaviorSubject(null);
+  answer = this.answerBehavior.asObservable();
+
+  private candidateBehavior: BehaviorSubject<any> = new BehaviorSubject(null);
+  candidate = this.candidateBehavior.asObservable();
+
   private rejectedCallBehavior: BehaviorSubject<any> = new BehaviorSubject(null);
   rejectedCall = this.rejectedCallBehavior.asObservable();
 
@@ -39,7 +46,7 @@ export class PusherService implements OnDestroy{
     'Authorization': 'Bearer ' + sessionStorage.getItem("jwt")
   });
 
-  constructor(private currentUserService: CurrentUserService, private toastr: ToastrService) {
+  constructor(private currentUserService: CurrentUserService, private toastr: ToastrService, private rtcService: RtcService) {
     this.currentUserService.isLoggedIn.subscribe((loggedIn) => {
       if(loggedIn){
         this.headers = new HttpHeaders({
@@ -120,22 +127,25 @@ export class PusherService implements OnDestroy{
       this.incomingCallBehavior.next(message);
     });
 
-    this.presenceChannel.bind('answer', (data: any) => {
+    this.presenceChannel.bind('answer', (message: any) => {
       console.log('answer');
-      //TODO
+      if(message.usernameFrom === this.rtcService.getContactUsername()) {
+        this.answerBehavior.next(message);
+      }
     });
 
-    this.presenceChannel.bind('reject', (data: any) => {
+    this.presenceChannel.bind('reject', (message: any) => {
       console.log('reject');
       this.rejectedCallBehavior.next(true);
     });
 
-    this.presenceChannel.bind('candidate', (data: any) => {
+    this.presenceChannel.bind('candidate', (message: any) => {
       console.log('candidate');
-      //TODO
+      this.rtcService.addCandidate(message);
+      this.candidateBehavior.next(message);
     });
 
-    this.presenceChannel.bind('hang_up', (data: any) => {
+    this.presenceChannel.bind('hang_up', (message: any) => {
       console.log('hang up');
       //TODO
     });

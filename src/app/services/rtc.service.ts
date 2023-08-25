@@ -16,6 +16,7 @@ export class RtcService {
   private isCaller: boolean = true;
   private contactUsername: string = '';
   private currentOffer: any;
+  private candidates: any[] = [];
 
   private headers = new HttpHeaders({
     'Authorization': 'Bearer ' + sessionStorage.getItem("jwt")
@@ -70,5 +71,17 @@ export class RtcService {
 
   getOffer() {
     return this.currentOffer;
+  }
+
+  addCandidate(candidate: any) {
+    this.candidates.push(candidate);
+  }
+
+  clearCandidates() {
+    this.candidates = [];
+  }
+
+  getCandidates() {
+    return this.candidates;
   }
 }

@@ -17,8 +17,6 @@ export class CallComponent implements AfterViewInit {
   private remoteStream: any;
   private peerConnection: any;
 
-  //TODO: move constraints here?
-
   @Input()
   mainComponent!: MainComponent;
   private isCaller: boolean = true;
@@ -30,8 +28,6 @@ export class CallComponent implements AfterViewInit {
   usingCamera: boolean = false;
   usingMicrophone: boolean = true;
 
-  displayStyle: string = 'none';
-
   constructor(private rtcService: RtcService, private pusherService: PusherService, private toastr: ToastrService) {
   }
 
@@ -40,13 +36,18 @@ export class CallComponent implements AfterViewInit {
     this.contactUsername = this.rtcService.getContactUsername();
 
     if(this.isCaller) {
-      this.initLocalStream().then(() => this.createOffer());
+      this.createOffer().then(() => {
+        this.handleCandidates();
+      });
     }
     else {
-      this.initLocalStream().then(() => this.createAnswer(this.rtcService.getOffer()));
+      this.createAnswer(this.rtcService.getOffer()).then(() => {
+        this.handleCandidates();
+      });
     }
 
     this.initHandlers();
+    this.initPeerHandlers();
   }
 
   private async initLocalStream() {
@@ -77,12 +78,13 @@ export class CallComponent implements AfterViewInit {
     this.localStream.getTracks().forEach((track: MediaStreamTrack) => {
       this.peerConnection.addTrack(track, this.localStream);
     });
+  }
 
-    this.peerConnection.ontrack = (event: any) => {
-      event.streams[0].getTracks().forEach((track: MediaStreamTrack) => {
-        this.remoteStream.addTrack(track);
-      });
-    }
+  private initPeerHandlers() {
+    this.peerConnection.addEventListener('track', async (event: any) => {
+      let [remoteStream] = event.streams;
+      this.contactVideo.nativeElement.srcObject = remoteStream;
+    });
 
     this.peerConnection.onicecandidate = async (event:any) => {
       if(event.candidate){
@@ -91,11 +93,21 @@ export class CallComponent implements AfterViewInit {
     }
   }
 
+  private handleCandidates() {
+    for(let candidate of this.rtcService.getCandidates()) {
+      if(candidate.usernameFrom == this.contactUsername) {
+        this.addIceCandidate(candidate.data);
+      }
+    }
+
+    this.rtcService.clearCandidates();
+  }
+
   private async createOffer() {
     await this.createPeerConnection();
 
     let offer = await this.peerConnection.createOffer();
-    await this.peerConnection.setLocalDescription(offer)
+    await this.peerConnection.setLocalDescription(offer);
 
     this.sendMessage(RTCMessageType.OFFER, offer);
   }
@@ -111,7 +123,7 @@ export class CallComponent implements AfterViewInit {
   }
 
   private async addAnswer(answer: any) {
-    if(this.peerConnection.currentRemoteDescription) {
+    if(!this.peerConnection.currentRemoteDescription) {
       this.peerConnection.setRemoteDescription(answer);
     }
   }
@@ -161,13 +173,40 @@ export class CallComponent implements AfterViewInit {
         this.leaveCall();
       }
     });
+
+    this.pusherService.answer.subscribe((message) => {
+      if(message) {
+        this.addAnswer(message.data);
+      }
+    });
+
+    this.pusherService.candidate.subscribe((message) => {
+      if(message) {
+        if(this.peerConnection.remoteDescription) {
+          this.addIceCandidate(message.data);
+        }
+      }
+    })
   }
 
   leaveCall() {
+    this.disconnect();
+    this.sendMessage(RTCMessageType.HANG_UP, null);
+    close();
+  }
+
+  private disconnect() {
     this.localStream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
     this.peerConnection.close();
-    this.sendMessage(RTCMessageType.HANG_UP, null);
+  }
+
+  private close() {
     this.mainComponent.setChatComponent(this.contactUsername);
+  }
+
+  callEnded() {
+    this.disconnect();
+    close();
   }
 
 }
