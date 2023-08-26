@@ -1,9 +1,9 @@
 <div class="container-fluid">
   <div class="row">
-    <div id="sidenav" [ngClass]="{'hide-sidenav': hideSidenav}" class="col-2">
+    <div id="sidenav" class="col-2">
       <app-navbar [mainComponent]="this"></app-navbar>
     </div>
-    <div class="col-10" [ngClass]="{'col-10': !hideSidenav, 'col-12': hideSidenav}">
+    <div class="col-10">
       <nav class="navbar d-flex justify-content-end align-items-center">
         <div *ngIf="isLoggedIn" class="d-flex align-items-center">
           <i *ngIf="contactRequests.length == 0; else requests" (click)="noRequestsInfo()" class="bi bi-envelope envelope-icon envelope-empty"></i>
@@ -16,9 +16,8 @@
       </nav>
 
       <ng-container [ngSwitch]="componentType">
-        <app-home *ngSwitchCase="ComponentType.HOME"></app-home>
-        <app-chat *ngSwitchCase="ComponentType.CHAT" [mainComponent]="this"></app-chat>
-        <app-call *ngSwitchCase="ComponentType.CALL" [mainComponent]="this"></app-call>
+        <app-home *ngSwitchCase="'HOME'"></app-home>
+        <app-chat *ngSwitchCase="'CHAT'" [mainComponent]="this"></app-chat>
       </ng-container>
 
       <app-contact-requests></app-contact-requests>

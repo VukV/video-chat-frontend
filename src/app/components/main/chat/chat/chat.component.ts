@@ -18,7 +18,9 @@ export class ChatComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.chatContactUsername = this.rtcService.getContactUsername();
+    this.rtcService.contactUsernameObservable.subscribe((username) => {
+      this.chatContactUsername = username;
+    });
   }
 
   closeChat() {

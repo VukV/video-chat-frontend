@@ -53,6 +53,7 @@ export class NavbarComponent implements AfterViewInit, OnInit {
     this.userService.getUserContacts().subscribe({
       complete: () => {
         this.loadingComponent.stop();
+        this.checkForOnlineContacts();
       },
       error: (error) => {
         retry(3);
@@ -103,6 +104,10 @@ export class NavbarComponent implements AfterViewInit, OnInit {
   }
 
   private checkForOnlineContacts() {
+    if(!this.pusherService.presenceChannel) {
+      return;
+    }
+
     let onlineList = this.pusherService.presenceChannel.members;
 
     for (let memberId in onlineList.members) {

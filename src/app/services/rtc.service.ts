@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {CurrentUserService} from "./current-user.service";
 import {environment} from "../../environments/environment";
 import {RTCMessage, RTCMessageType} from "../model/rtc/rtc-message";
-import {catchError, of, throwError} from "rxjs";
+import {BehaviorSubject, catchError, of, throwError} from "rxjs";
 import {ExceptionMessages} from "../model/exception-messages";
 
 @Injectable({
@@ -14,7 +14,12 @@ export class RtcService {
   private rtcUrl: string = environment.rtcUrl;
 
   private isCaller: boolean = true;
+  private videoCall: boolean = false;
+
   private contactUsername: string = '';
+  private usernameBehavior: BehaviorSubject<string> = new BehaviorSubject<any>('');
+  contactUsernameObservable = this.usernameBehavior.asObservable();
+
   private currentOffer: any;
   private candidates: any[] = [];
 
@@ -61,6 +66,7 @@ export class RtcService {
 
   setContactUsername(username: string) {
     this.contactUsername = username;
+    this.usernameBehavior.next(username);
   }
 
   getContactUsername(): string {
@@ -94,4 +100,13 @@ export class RtcService {
   isActiveCall(): boolean {
     return this.activeCall;
   }
+
+  setVideoCall(videoCall: boolean) {
+    this.videoCall = videoCall;
+  }
+
+  isVideoCall(): boolean {
+    return this.videoCall;
+  }
+
 }

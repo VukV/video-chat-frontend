@@ -42,7 +42,7 @@ export class PusherService implements OnDestroy{
   private rejectedCallBehavior: BehaviorSubject<any> = new BehaviorSubject(null);
   rejectedCall = this.rejectedCallBehavior.asObservable();
 
-  private hangUpBehavior: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private hangUpBehavior: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   hangUp = this.hangUpBehavior.asObservable();
 
   private headers = new HttpHeaders({
@@ -140,7 +140,7 @@ export class PusherService implements OnDestroy{
     });
 
     this.presenceChannel.bind('reject', (message: any) => {
-      this.rejectedCallBehavior.next(true);
+      this.rejectedCallBehavior.next(message);
     });
 
     this.presenceChannel.bind('candidate', (message: any) => {
@@ -149,8 +149,12 @@ export class PusherService implements OnDestroy{
     });
 
     this.presenceChannel.bind('hang_up', (message: any) => {
-      this.hangUpBehavior.next(true);
+      this.hangUpBehavior.next(message);
     });
+  }
+
+  handleIncomingCall() {
+    this.incomingCallBehavior.next(false);
   }
 
   private disconnect() {

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CurrentUserService} from "../../services/current-user.service";
 import {Router} from "@angular/router";
 import {ComponentType} from "../../model/component-type";
@@ -25,15 +25,11 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   contactRequests: ContactRequest[] = [];
   requestsSubscription!: Subscription;
 
-  componentType: ComponentType = ComponentType.HOME;
+  componentType: string = 'HOME';
   readonly ComponentType = ComponentType;
 
   @ViewChild(ChatComponent)
   chatComponent!: ChatComponent;
-
-  @ViewChild(CallComponent)
-  callComponent!: CallComponent;
-  private videoCall: boolean = false;
 
   @ViewChild(IncomingCallComponent)
   incomingCallComponent!: IncomingCallComponent
@@ -41,13 +37,11 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(ContactRequestsComponent)
   contactRequestsComponent!: ContactRequestsComponent;
 
-  navCol: string = 'col-2';
-  mainCol: string = 'col-10';
   hideSidenav: boolean = false;
 
   constructor(private currentUserService: CurrentUserService, private contactRequestService: ContactRequestService,
               private router: Router, private toastr: ToastrService, private rtcService: RtcService,
-              private pusherService: PusherService) {
+              private pusherService: PusherService, private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -65,32 +59,27 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   initHandlers() {
     this.pusherService.incomingCall.subscribe((message) => {
       if(message) {
+        console.log("STIGAO CALL")
         this.incomingCallComponent.open(message);
+        this.pusherService.handleIncomingCall();
       }
     });
   }
 
   setHomeComponent() {
-    this.resetColumns();
-    this.componentType = ComponentType.HOME;
+    this.componentType = 'HOME'
     this.rtcService.setContactUsername('');
   }
 
   setChatComponent(username: string) {
-    this.resetColumns();
-    this.componentType = ComponentType.CHAT;
+    this.componentType = 'CHAT';
     this.rtcService.setContactUsername(username);
   }
 
   setCallComponent(videoCall: boolean, isCaller: boolean) {
-    this.setColumnsCall();
     this.rtcService.setCallerStatus(isCaller);
-    this.componentType = ComponentType.CALL;
-    this.videoCall = videoCall;
-  }
-
-  isVideoCall() {
-    return this.videoCall;
+    this.rtcService.setVideoCall(videoCall);
+    this.router.navigate(['call']);
   }
 
   getUserRequests() {
@@ -129,11 +118,15 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private setColumnsCall() {
+    //todo delete
     this.hideSidenav = true;
+    this.cdr.detectChanges();
   }
 
   private resetColumns() {
+    //todo delete
     this.hideSidenav = false;
+    this.cdr.detectChanges();
   }
 
 }

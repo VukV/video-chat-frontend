@@ -1,10 +1,11 @@
-import {AfterViewInit, Component, ElementRef, Input, ViewChild} from '@angular/core';
-import {MainComponent} from "../../main.component";
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {environment} from "../../../../../environments/environment";
 import {ToastrService} from "ngx-toastr";
 import {RTCMessageType} from "../../../../model/rtc/rtc-message";
 import {RtcService} from "../../../../services/rtc.service";
 import {PusherService} from "../../../../services/pusher.service";
+import {SoundService} from "../../../../services/sound.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-call',
@@ -17,8 +18,6 @@ export class CallComponent implements AfterViewInit {
   private remoteStream: any;
   private peerConnection: any;
 
-  @Input()
-  mainComponent!: MainComponent;
   private isCaller: boolean = true;
   private contactUsername: string = '';
 
@@ -28,7 +27,8 @@ export class CallComponent implements AfterViewInit {
   usingCamera: boolean = false;
   usingMicrophone: boolean = true;
 
-  constructor(private rtcService: RtcService, private pusherService: PusherService, private toastr: ToastrService) {
+  constructor(private rtcService: RtcService, private pusherService: PusherService, private toastr: ToastrService,
+              private soundService: SoundService, private router: Router) {
   }
 
   ngAfterViewInit(): void {
@@ -47,14 +47,12 @@ export class CallComponent implements AfterViewInit {
     }
 
     this.rtcService.setActiveCall(true);
-    this.initHandlers();
-    this.initPeerHandlers();
   }
 
   private async initLocalStream() {
     this.localStream = await navigator.mediaDevices.getUserMedia(environment.rtc.constraints);
 
-    this.usingCamera = this.mainComponent.isVideoCall();
+    this.usingCamera = this.rtcService.isVideoCall();
     if(!this.usingCamera) {
       await this.disableCamera()
     }
@@ -79,18 +77,31 @@ export class CallComponent implements AfterViewInit {
     this.localStream.getTracks().forEach((track: MediaStreamTrack) => {
       this.peerConnection.addTrack(track, this.localStream);
     });
+
+    this.initPeerHandlers();
+    this.initHandlers();
   }
 
   private initPeerHandlers() {
-    this.peerConnection.addEventListener('track', async (event: any) => {
-      let [remoteStream] = event.streams;
-      this.contactVideo.nativeElement.srcObject = remoteStream;
-    });
+    this.peerConnection.addEventListener('track', this.trackEventHandler);
+    this.peerConnection.onicecandidate = this.iceCandidateHandler;
+  }
 
-    this.peerConnection.onicecandidate = async (event:any) => {
-      if(event.candidate){
-        this.sendMessage(RTCMessageType.CANDIDATE, event.candidate);
-      }
+  private trackEventHandler = async (event: any) => {
+    let [remoteStream] = event.streams;
+    this.contactVideo.nativeElement.srcObject = remoteStream;
+  };
+
+  private iceCandidateHandler = async (event: any) => {
+    if (event.candidate) {
+      this.sendMessage(RTCMessageType.CANDIDATE, event.candidate);
+    }
+  };
+
+  private clearHandlers() {
+    if(this.peerConnection) {
+      this.peerConnection.removeEventListener('track', this.trackEventHandler);
+      this.peerConnection.onicecandidate = null;
     }
   }
 
@@ -111,6 +122,8 @@ export class CallComponent implements AfterViewInit {
     await this.peerConnection.setLocalDescription(offer);
 
     this.sendMessage(RTCMessageType.OFFER, offer);
+
+    //todo start counter
   }
 
   private async createAnswer(offer: any) {
@@ -170,8 +183,10 @@ export class CallComponent implements AfterViewInit {
 
   private initHandlers() {
     this.pusherService.rejectedCall.subscribe((rejected) => {
-      if(rejected) {
-        this.leaveCall();
+      if(rejected && rejected.usernameFrom == this.contactUsername) {
+        if(this.rtcService.isActiveCall()) {
+          this.callEnded();
+        }
       }
     });
 
@@ -190,7 +205,7 @@ export class CallComponent implements AfterViewInit {
     });
 
     this.pusherService.hangUp.subscribe((hangUp) => {
-      if(hangUp) {
+      if(hangUp.usernameFrom == this.contactUsername) {
         this.callEnded();
       }
     });
@@ -203,13 +218,28 @@ export class CallComponent implements AfterViewInit {
   }
 
   private disconnect() {
-    this.localStream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
+    if(this.localStream) {
+      this.localStream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
+      this.localStream = null;
+    }
+
+    if (this.remoteStream) {
+      this.remoteStream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
+      this.remoteStream = null;
+    }
+
+    this.clearHandlers();
+
+    // console.log("PRE CLOSE")
     this.peerConnection.close();
+    console.log("STIGO CLOSE")
+    //this.peerConnection = null;
     this.rtcService.setActiveCall(false);
   }
 
   private close() {
-    this.mainComponent.setChatComponent(this.contactUsername);
+    this.soundService.playCallEnded();
+    this.router.navigate(['']);
   }
 
   callEnded() {
