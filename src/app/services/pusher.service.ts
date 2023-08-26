@@ -127,6 +127,7 @@ export class PusherService implements OnDestroy{
     });
 
     this.presenceChannel.bind('offer', (message: any) => {
+      console.log("STIGAO OFFER")
       if(this.rtcService.isActiveCall()) {
         return;
       }
@@ -134,8 +135,10 @@ export class PusherService implements OnDestroy{
     });
 
     this.presenceChannel.bind('answer', (message: any) => {
+      console.log("STIGAO ANSWER")
       if(message.usernameFrom === this.rtcService.getContactUsername()) {
         this.answerBehavior.next(message);
+        console.log("ISPRAVAN ANSWER")
       }
     });
 
@@ -144,6 +147,7 @@ export class PusherService implements OnDestroy{
     });
 
     this.presenceChannel.bind('candidate', (message: any) => {
+      console.log("STIGAO CANDIDATE")
       this.rtcService.addCandidate(message);
       this.candidateBehavior.next(message);
     });

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import {environment} from "../../../../../environments/environment";
 import {ToastrService} from "ngx-toastr";
 import {RTCMessageType} from "../../../../model/rtc/rtc-message";
@@ -12,7 +12,7 @@ import {Router} from "@angular/router";
   templateUrl: './call.component.html',
   styleUrls: ['./call.component.css']
 })
-export class CallComponent implements AfterViewInit {
+export class CallComponent implements AfterViewInit, OnDestroy {
 
   private localStream: any;
   private remoteStream: any;
@@ -108,6 +108,7 @@ export class CallComponent implements AfterViewInit {
   private handleCandidates() {
     for(let candidate of this.rtcService.getCandidates()) {
       if(candidate.usernameFrom == this.contactUsername) {
+        console.log("HANDLE ICE")
         this.addIceCandidate(candidate.data);
       }
     }
@@ -122,6 +123,7 @@ export class CallComponent implements AfterViewInit {
     await this.peerConnection.setLocalDescription(offer);
 
     this.sendMessage(RTCMessageType.OFFER, offer);
+    console.log("POSLAO OFFER");
 
     //todo start counter
   }
@@ -144,7 +146,9 @@ export class CallComponent implements AfterViewInit {
 
   private async addIceCandidate(candidate: any) {
     if(this.peerConnection) {
+      console.log("POKUSAVA DA DODA ICE")
       this.peerConnection.addIceCandidate(candidate);
+      console.log("DODAO ICE")
     }
   }
 
@@ -199,6 +203,7 @@ export class CallComponent implements AfterViewInit {
     this.pusherService.candidate.subscribe((message) => {
       if(message) {
         if(this.peerConnection.remoteDescription) {
+          console.log("PUSHER ICE")
           this.addIceCandidate(message.data);
         }
       }
@@ -230,10 +235,8 @@ export class CallComponent implements AfterViewInit {
 
     this.clearHandlers();
 
-    // console.log("PRE CLOSE")
     this.peerConnection.close();
-    console.log("STIGO CLOSE")
-    //this.peerConnection = null;
+    console.log("ODRADJEN PEER CONNECTION CLOSE")
     this.rtcService.setActiveCall(false);
   }
 
@@ -245,6 +248,10 @@ export class CallComponent implements AfterViewInit {
   callEnded() {
     this.disconnect();
     this.close();
+  }
+
+  ngOnDestroy(): void {
+    console.log("POZVAN DESTROY")
   }
 
 }

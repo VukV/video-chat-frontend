@@ -64,6 +64,7 @@ export class IncomingCallComponent implements AfterViewInit{
   }
 
   open(message: any) {
+    console.log("INCOMING CALL OPEN")
     this.soundService.playRinging();
 
     this.callerUsername = message.usernameFrom;
@@ -75,7 +76,7 @@ export class IncomingCallComponent implements AfterViewInit{
     if(this.displayStyle !== "none") {
       this.soundService.stopRinging();
       this.displayStyle = "none";
-      console.log("POSTAVIO DISPLAY STYLE ", this.displayStyle)
+      console.log("CLOSE INCOMING CALL")
     }
   }
 
