@@ -41,8 +41,9 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(ContactRequestsComponent)
   contactRequestsComponent!: ContactRequestsComponent;
 
-  navCol: string = '2';
-  mainCol: string = '10';
+  navCol: string = 'col-2';
+  mainCol: string = 'col-10';
+  hideSidenav: boolean = false;
 
   constructor(private currentUserService: CurrentUserService, private contactRequestService: ContactRequestService,
               private router: Router, private toastr: ToastrService, private rtcService: RtcService,
@@ -128,13 +129,11 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private setColumnsCall() {
-    this.navCol = '1';
-    this.mainCol = '11';
+    this.hideSidenav = true;
   }
 
   private resetColumns() {
-    this.navCol = '2';
-    this.mainCol = '10';
+    this.hideSidenav = false;
   }
 
 }

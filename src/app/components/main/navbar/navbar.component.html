@@ -1,4 +1,4 @@
-<nav *ngIf="mainComponent.componentType!=mainComponent.ComponentType.CALL; else call" class="sidebar vh-100">
+<nav  class="sidebar vh-100">
 
   <div class="sidebar-top">
     <h1>
@@ -49,19 +49,3 @@
   <app-loading></app-loading>
 
 </nav>
-
-<ng-template #call>
-  <nav class="sidebar sidebar-call vh-100">
-    <div class="sidebar-top">
-      <h1>
-        <i class="bi bi-camera-video"></i>
-      </h1>
-    </div>
-    <hr>
-    <div class="row justify-content-between bottom-section">
-      <div class="col-md-auto gear-icon">
-        <i (click)="openSettings()" class="bi bi-gear"></i>
-      </div>
-    </div>
-  </nav>
-</ng-template>

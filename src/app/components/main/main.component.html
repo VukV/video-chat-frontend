@@ -1,9 +1,9 @@
 <div class="container-fluid">
   <div class="row">
-    <div id="sidenav" class="col-{{ navCol }}">
+    <div id="sidenav" [ngClass]="{'hide-sidenav': hideSidenav}" class="col-2">
       <app-navbar [mainComponent]="this"></app-navbar>
     </div>
-    <div class="col-{{ mainCol }}">
+    <div class="col-10" [ngClass]="{'col-10': !hideSidenav, 'col-12': hideSidenav}">
       <nav class="navbar d-flex justify-content-end align-items-center">
         <div *ngIf="isLoggedIn" class="d-flex align-items-center">
           <i *ngIf="contactRequests.length == 0; else requests" (click)="noRequestsInfo()" class="bi bi-envelope envelope-icon envelope-empty"></i>

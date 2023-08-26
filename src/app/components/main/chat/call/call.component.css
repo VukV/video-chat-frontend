@@ -1,13 +1,17 @@
+hr {
+  margin-top: 0;
+}
+
 #videos{
   display: grid;
   grid-template-columns: 1fr;
-  max-height: 85vh;
+  max-height: 80vh;
   overflow:hidden;
 }
 
 .video-player{
   background-color: black;
-  width: 95%;
+  width: 100%;
   object-fit: cover;
 }
 
@@ -24,8 +28,8 @@
 
 .small-frame {
   position: fixed;
-  top: 100px;
-  left: 200px;
+  top: 110px;
+  left: 50px;
   height: 170px;
   width: 300px;
   border-radius: 5px;

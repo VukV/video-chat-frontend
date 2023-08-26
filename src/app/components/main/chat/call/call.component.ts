@@ -46,6 +46,7 @@ export class CallComponent implements AfterViewInit {
       });
     }
 
+    this.rtcService.setActiveCall(true);
     this.initHandlers();
     this.initPeerHandlers();
   }
@@ -190,8 +191,7 @@ export class CallComponent implements AfterViewInit {
 
     this.pusherService.hangUp.subscribe((hangUp) => {
       if(hangUp) {
-        this.disconnect();
-        this.close();
+        this.callEnded();
       }
     });
   }
@@ -205,6 +205,7 @@ export class CallComponent implements AfterViewInit {
   private disconnect() {
     this.localStream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
     this.peerConnection.close();
+    this.rtcService.setActiveCall(false);
   }
 
   private close() {
@@ -213,7 +214,7 @@ export class CallComponent implements AfterViewInit {
 
   callEnded() {
     this.disconnect();
-    close();
+    this.close();
   }
 
 }

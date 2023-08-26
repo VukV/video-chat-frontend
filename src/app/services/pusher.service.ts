@@ -127,6 +127,9 @@ export class PusherService implements OnDestroy{
     });
 
     this.presenceChannel.bind('offer', (message: any) => {
+      if(this.rtcService.isActiveCall()) {
+        return;
+      }
       this.incomingCallBehavior.next(message);
     });
 

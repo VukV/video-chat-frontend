@@ -18,6 +18,8 @@ export class RtcService {
   private currentOffer: any;
   private candidates: any[] = [];
 
+  private activeCall: boolean = false;
+
   private headers = new HttpHeaders({
     'Authorization': 'Bearer ' + sessionStorage.getItem("jwt")
   });
@@ -83,5 +85,13 @@ export class RtcService {
 
   getCandidates() {
     return this.candidates;
+  }
+
+  setActiveCall(isActive: boolean) {
+    this.activeCall = isActive;
+  }
+
+  isActiveCall(): boolean {
+    return this.activeCall;
   }
 }
