@@ -16,7 +16,9 @@ export class PusherService implements OnDestroy{
 
   private pusher: any;
   presenceChannel: any;
+  privateChannel: any;
   private channels: number[] = [];
+  private bind: boolean = false;
 
   private subscribedBehavior = new BehaviorSubject(false);
   isSubscribed = this.subscribedBehavior.asObservable();
@@ -44,6 +46,9 @@ export class PusherService implements OnDestroy{
 
   private hangUpBehavior: BehaviorSubject<any> = new BehaviorSubject<any>(false);
   hangUp = this.hangUpBehavior.asObservable();
+
+  private chatBehavior: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  newChatMessage = this.chatBehavior.asObservable();
 
   private headers = new HttpHeaders({
     'Authorization': 'Bearer ' + sessionStorage.getItem("jwt")
@@ -81,6 +86,10 @@ export class PusherService implements OnDestroy{
     return this.pusher.subscribe('presence-' + contactId);
   }
 
+  subscribeToPrivateChannel() {
+    return this.pusher.subscribe('private-' + this.currentUserService.getUserId());
+  }
+
   initChannelList(contacts: User[]) {
     for(let contact of contacts) {
       this.channels.push(contact.userId);
@@ -92,10 +101,18 @@ export class PusherService implements OnDestroy{
   }
 
   subscribeToChannels() {
-    this.presenceChannel = this.subscribeToPresenceChannel(this.currentUserService.getUserId());
-    this.subscribeToContactChannels();
+    if(!this.presenceChannel) {
+      this.presenceChannel = this.subscribeToPresenceChannel(this.currentUserService.getUserId());
+      this.subscribeToContactChannels();
+    }
 
-    this.bindChannel();
+    if(!this.privateChannel) {
+      this.privateChannel = this.subscribeToPrivateChannel();
+    }
+
+    if(!this.bind) {
+      this.bindChannels();
+    }
   }
 
   private async subscribeToContactChannels() {
@@ -104,7 +121,7 @@ export class PusherService implements OnDestroy{
     }
   }
 
-  private bindChannel() {
+  private bindChannels() {
     this.presenceChannel.bind("pusher:subscription_succeeded", () => {
       console.log("Subscribed to channel.");
       this.subscribedBehavior.next(true);
@@ -122,11 +139,11 @@ export class PusherService implements OnDestroy{
       this.offlineBehavior.next(data.info.username);
     });
 
-    this.presenceChannel.bind('accepted_request', (data: any) => {
+    this.privateChannel.bind('accepted_request', (data: any) => {
       this.acceptedRequestBehavior.next(data);
     });
 
-    this.presenceChannel.bind('offer', (message: any) => {
+    this.privateChannel.bind('offer', (message: any) => {
       console.log("STIGAO OFFER")
       if(this.rtcService.isActiveCall()) {
         return;
@@ -134,7 +151,7 @@ export class PusherService implements OnDestroy{
       this.incomingCallBehavior.next(message);
     });
 
-    this.presenceChannel.bind('answer', (message: any) => {
+    this.privateChannel.bind('answer', (message: any) => {
       console.log("STIGAO ANSWER")
       if(message.usernameFrom === this.rtcService.getContactUsername()) {
         this.answerBehavior.next(message);
@@ -142,23 +159,33 @@ export class PusherService implements OnDestroy{
       }
     });
 
-    this.presenceChannel.bind('reject', (message: any) => {
+    this.privateChannel.bind('reject', (message: any) => {
       this.rejectedCallBehavior.next(message);
     });
 
-    this.presenceChannel.bind('candidate', (message: any) => {
+    this.privateChannel.bind('candidate', (message: any) => {
       console.log("STIGAO CANDIDATE")
       this.rtcService.addCandidate(message);
       this.candidateBehavior.next(message);
     });
 
-    this.presenceChannel.bind('hang_up', (message: any) => {
+    this.privateChannel.bind('hang_up', (message: any) => {
       this.hangUpBehavior.next(message);
     });
+
+    this.privateChannel.bind('chat_message', (message: any) => {
+      this.chatBehavior.next(message);
+    });
+
+    this.bind = true;
   }
 
   handleIncomingCall() {
     this.incomingCallBehavior.next(false);
+  }
+
+  private sendLastOnline() {
+
   }
 
   private disconnect() {
@@ -166,6 +193,7 @@ export class PusherService implements OnDestroy{
   }
 
   ngOnDestroy(): void {
+    this.sendLastOnline();
     this.disconnect();
   }
 }

@@ -2,6 +2,13 @@ hr {
   margin-top: 0;
 }
 
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 90vh;
+}
+
 .username {
   color: var(--chat-blue-dark);
   font-size: 1.2em;
@@ -14,4 +21,16 @@ hr {
 
 .btn-close {
   margin-left: 15px !important;
+}
+
+.user-message {
+
+}
+
+.contact-message {
+
+}
+
+textarea {
+  resize: none;
 }

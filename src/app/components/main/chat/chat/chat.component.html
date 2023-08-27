@@ -1,5 +1,5 @@
 <hr>
-<div class="container-fluid">
+<div class="container-fluid chat-container">
   <div class="row justify-content-between">
     <div class="col-md-auto">
       <p class="username">{{ chatContactUsername }}</p>
@@ -11,6 +11,26 @@
     </div>
   </div>
   <br>
-  AAA
+  <div class="overflow-auto">
+    <div *ngFor="let message of messages">
+      <div *ngIf="message.usernameFrom == chatContactUsername; else userMessage" class="row justify-content-start contact-message">
+        {{ message.text }}
+      </div>
+      <ng-template #userMessage>
+        <div class="row justify-content-end user-message">
+          {{ message.text }}
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <form class="row align-items-center" (ngSubmit)="sendMessage()">
+    <div class="col-md-11">
+      <textarea class="form-control" rows="2" (keydown.enter)="$event.preventDefault(); sendMessage()"></textarea>
+    </div>
+    <div class="col-md-1">
+      <button type="submit" class="button-main"><i class="bi bi-send"></i></button>
+    </div>
+  </form>
 </div>
 

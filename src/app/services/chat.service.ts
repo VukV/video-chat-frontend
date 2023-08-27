@@ -24,5 +24,13 @@ export class ChatService {
     });
   }
 
+  sendMessage() {
+
+  }
+
+  getMessagesWithUser(contactUsername: string) {
+
+  }
+
 
 }
