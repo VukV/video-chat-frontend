@@ -3,6 +3,7 @@ export const environment = {
   usersUrl: "",
   contactRequestsUrl: "",
   rtcUrl: "",
+  chatUrl: "",
 
   pusher: {
     key: "",

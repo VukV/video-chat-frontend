@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {CurrentUserService} from "../../../services/current-user.service";
 import {AddContactComponent} from "../add-contact/add-contact.component";
 import {UserService} from "../../../services/user.service";
@@ -8,11 +8,6 @@ import {retry} from "rxjs";
 import {ToastrService} from "ngx-toastr";
 import {MainComponent} from "../main.component";
 import {PusherService} from "../../../services/pusher.service";
-import Pusher from "pusher-js";
-import {ExceptionMessages} from "../../../model/exception-messages";
-import {NgxSpinnerService} from "ngx-spinner";
-import {ComponentType} from "../../../model/component-type";
-import {isSubscription} from "rxjs/internal/Subscription";
 
 @Component({
   selector: 'app-navbar',

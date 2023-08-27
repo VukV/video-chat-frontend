@@ -3,6 +3,7 @@ export const environment = {
   usersUrl: "http://localhost:8080/api/users",
   contactRequestsUrl: "http://localhost:8080/api/contact-requests",
   rtcUrl: "http://localhost:8080/api/rtc",
+  chatUrl: "http://localhost:8080/api/chat",
 
   pusher: {
     key: "",

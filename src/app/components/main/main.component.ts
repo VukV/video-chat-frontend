@@ -1,7 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CurrentUserService} from "../../services/current-user.service";
 import {Router} from "@angular/router";
-import {ComponentType} from "../../model/component-type";
 import {ContactRequest} from "../../model/contact-request/contact-request";
 import {ChatComponent} from "./chat/chat/chat.component";
 import {ToastrService} from "ngx-toastr";
@@ -26,7 +25,6 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   requestsSubscription!: Subscription;
 
   componentType: string = 'HOME';
-  readonly ComponentType = ComponentType;
 
   @ViewChild(ChatComponent)
   chatComponent!: ChatComponent;
