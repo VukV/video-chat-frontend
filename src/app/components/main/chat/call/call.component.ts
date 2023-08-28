@@ -38,6 +38,11 @@ export class CallComponent implements AfterViewInit, OnDestroy {
     this.isCaller = this.rtcService.getCallerStatus();
     this.contactUsername = this.rtcService.getContactUsername();
 
+    if(this.contactUsername === '') {
+      this.close();
+      return;
+    }
+
     if(this.isCaller) {
       this.createOffer().then(() => {
         this.handleCandidates();
@@ -69,6 +74,7 @@ export class CallComponent implements AfterViewInit, OnDestroy {
 
   private async createPeerConnection() {
     this.peerConnection = new RTCPeerConnection(environment.rtc.servers);
+    console.log("NAPRAVIO PEER CONNECTION");
 
     this.remoteStream = new MediaStream();
     this.contactVideo.nativeElement.srcObject = this.remoteStream;
@@ -109,10 +115,12 @@ export class CallComponent implements AfterViewInit, OnDestroy {
   }
 
   private handleCandidates() {
-    for(let candidate of this.rtcService.getCandidates()) {
-      if(candidate.usernameFrom == this.contactUsername) {
-        console.log("HANDLE ICE")
-        this.addIceCandidate(candidate.data);
+    if (this.peerConnection && this.peerConnection.iceConnectionState !== 'closed') {
+      for(let candidate of this.rtcService.getCandidates()) {
+        if(candidate.usernameFrom == this.contactUsername) {
+          console.log("HANDLE ICE")
+          this.addIceCandidate(candidate.data);
+        }
       }
     }
 
@@ -139,17 +147,19 @@ export class CallComponent implements AfterViewInit, OnDestroy {
     await this.peerConnection.setLocalDescription(answer);
 
     this.sendMessage(RTCMessageType.ANSWER, answer);
+    console.log("POSLAO ANSWER")
   }
 
   private async addAnswer(answer: any) {
     if(!this.peerConnection.currentRemoteDescription) {
+      console.log("DODAJE ANSWER (REMOTE DESC)")
       this.peerConnection.setRemoteDescription(answer);
     }
   }
 
   private async addIceCandidate(candidate: any) {
     if(this.peerConnection) {
-      console.log("POKUSAVA DA DODA ICE")
+      console.log("POKUSAVA DA DODA ICE ", candidate)
       this.peerConnection.addIceCandidate(candidate);
       console.log("DODAO ICE")
     }
@@ -192,44 +202,47 @@ export class CallComponent implements AfterViewInit, OnDestroy {
     this.pusherService.rejectedCall
       .pipe(takeUntil(this.componentDestroyed))
       .subscribe((rejected) => {
-      if(rejected && rejected.usernameFrom == this.contactUsername) {
-        if(this.rtcService.isActiveCall()) {
-          this.callEnded();
+        if(rejected && rejected.usernameFrom == this.contactUsername) {
+          if(this.rtcService.isActiveCall()) {
+            this.callEnded();
+          }
         }
-      }
     });
 
     this.pusherService.answer
       .pipe(takeUntil(this.componentDestroyed))
       .subscribe((message) => {
-      if(message) {
-        this.addAnswer(message.data);
-      }
+        if(message) {
+          console.log("SUB NA ANSWER ", message)
+          this.addAnswer(message.data);
+        }
     });
 
     this.pusherService.candidate
       .pipe(takeUntil(this.componentDestroyed))
       .subscribe((message) => {
-      if(message) {
-        if(this.peerConnection.remoteDescription) {
-          console.log("PUSHER ICE")
-          this.addIceCandidate(message.data);
+        if(message) {
+          if(this.peerConnection.remoteDescription) {
+            console.log("PUSHER ICE")
+            this.addIceCandidate(message.data);
+          }
         }
-      }
     });
 
     this.pusherService.hangUp
       .pipe(takeUntil(this.componentDestroyed))
       .subscribe((hangUp) => {
-      if(hangUp.usernameFrom == this.contactUsername) {
-        this.callEnded();
-      }
+        if(hangUp.usernameFrom == this.contactUsername) {
+          this.callEnded();
+        }
     });
   }
 
   private removeHandlers() {
     this.componentDestroyed.next();
     this.componentDestroyed.complete();
+
+    this.pusherService.resetCall();
   }
 
   leaveCall() {
@@ -253,6 +266,7 @@ export class CallComponent implements AfterViewInit, OnDestroy {
 
     this.peerConnection.close();
     console.log("ODRADJEN PEER CONNECTION CLOSE")
+    this.rtcService.clearCandidates();
     this.rtcService.setActiveCall(false);
   }
 

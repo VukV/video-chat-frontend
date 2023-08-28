@@ -36,10 +36,10 @@ export class IncomingCallComponent implements AfterViewInit, OnDestroy {
     this.pusherService.hangUp
       .pipe(takeUntil(this.componentDestroyed))
       .subscribe((data) => {
-      if(data.usernameFrom == this.callerUsername) {
-        this.close();
-        this.soundService.playCallEnded();
-      }
+        if(data.usernameFrom == this.callerUsername) {
+          this.close();
+          this.soundService.playCallEnded();
+        }
     })
   }
 
@@ -51,6 +51,7 @@ export class IncomingCallComponent implements AfterViewInit, OnDestroy {
     this.rtcService.setCallerStatus(false);
     this.rtcService.setVideoCall(videoCall);
 
+    console.log("OTVARA CALL COMPONENT")
     this.router.navigate(['call']);
   }
 

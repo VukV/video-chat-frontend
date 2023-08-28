@@ -70,33 +70,33 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
     this.pusherService.isSubscribed
       .pipe(takeUntil(this.componentDestroyed))
       .subscribe((isSubscribed) => {
-      if(isSubscribed){
-        this.checkForOnlineContacts();
-      }
+        if(isSubscribed){
+          this.checkForOnlineContacts();
+        }
     });
 
     this.pusherService.onlineContact
       .pipe(takeUntil(this.componentDestroyed))
       .subscribe((username) => {
-      if(username) {
-        this.contactOnlineHandler(username);
-      }
+        if(username) {
+          this.contactOnlineHandler(username);
+        }
     });
 
     this.pusherService.offlineContact
       .pipe(takeUntil(this.componentDestroyed))
       .subscribe((username) => {
-      if(username) {
-        this.contactOfflineHandler(username);
-      }
+        if(username) {
+          this.contactOfflineHandler(username);
+        }
     });
 
     this.pusherService.acceptedRequest
       .pipe(takeUntil(this.componentDestroyed))
       .subscribe((data) => {
-      if(data) {
-        this.contactAcceptedHandler(data);
-      }
+        if(data) {
+          this.contactAcceptedHandler(data);
+        }
     });
   }
 

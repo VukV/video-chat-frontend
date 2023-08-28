@@ -192,6 +192,12 @@ export class PusherService implements OnDestroy{
     this.pusher.disconnect();
   }
 
+  resetCall() {
+    this.answerBehavior.next(false);
+    this.candidateBehavior.next(false);
+    this.incomingCallBehavior.next(false);
+  }
+
   ngOnDestroy(): void {
     this.sendLastOnline();
     this.disconnect();

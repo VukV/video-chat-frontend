@@ -60,11 +60,11 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
     this.pusherService.incomingCall
       .pipe(takeUntil(this.componentDestroyed))
       .subscribe((message) => {
-      if(message) {
-        console.log("STIGAO CALL ", message)
-        this.incomingCallComponent.open(message);
-        this.pusherService.handleIncomingCall();
-      }
+        if(message) {
+          console.log("STIGAO CALL ", message)
+          this.incomingCallComponent.open(message);
+          this.pusherService.handleIncomingCall();
+        }
     });
   }
 
