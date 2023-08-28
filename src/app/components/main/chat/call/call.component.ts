@@ -58,7 +58,7 @@ export class CallComponent implements AfterViewInit {
   }
 
   private async initLocalStream() {
-    this.localStream = await navigator.mediaDevices.getUserMedia(environment.rtc.constraints);
+    this.localStream = await navigator.mediaDevices.getUserMedia(this.rtcService.getConstraints());
 
     this.usingCamera = this.rtcService.isVideoCall();
     if(!this.usingCamera) {
@@ -73,7 +73,7 @@ export class CallComponent implements AfterViewInit {
   }
 
   private async createPeerConnection() {
-    this.peerConnection = new RTCPeerConnection(environment.rtc.servers);
+    this.peerConnection = new RTCPeerConnection(this.rtcService.getServers());
 
     this.remoteStream = new MediaStream();
     this.contactVideo.nativeElement.srcObject = this.remoteStream;
