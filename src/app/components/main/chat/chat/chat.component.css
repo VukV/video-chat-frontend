@@ -2,11 +2,8 @@ hr {
   margin-top: 0;
 }
 
-.chat-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 90vh;
+.chat-div {
+  min-height: 90vh;
 }
 
 .username {
@@ -23,12 +20,34 @@ hr {
   margin-left: 15px !important;
 }
 
-.user-message {
+.messages-container {
+  max-height: calc(90vh - 150px);
+  margin-bottom: 10px;
+}
 
+.message-row {
+  display: flex;
+  justify-content: flex-start;
+  margin: 8px;
+}
+
+.user-message {
+  background-color: var(--chat-white);
+  color: var(--chat-blue-darker);
+  border-radius: 8px;
+  padding: 8px 12px;
+  max-width: 70%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1)  ;
 }
 
 .contact-message {
-
+  background-color: var(--chat-blue-dark);
+  color: white;
+  border-radius: 8px;
+  padding: 8px 12px;
+  max-width: 70%;
+  margin-left: auto;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1)  ;
 }
 
 textarea {

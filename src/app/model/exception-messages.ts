@@ -15,4 +15,8 @@ export class ExceptionMessages {
   public static PUSHER_SOCKET_ERROR: string = "Error while connecting to channel.";
 
   public static PUSHER_RTC_ERROR: string = "Error while connecting to contact.";
+
+  public static GET_CHAT_MESSAGES_ERROR: string = "Error while getting messages";
+
+  public static SEND_CHAT_MESSAGE_ERROR: string = "Error while sending a message."
 }

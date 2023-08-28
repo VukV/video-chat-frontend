@@ -8,6 +8,8 @@ import {retry, Subject, takeUntil} from "rxjs";
 import {ToastrService} from "ngx-toastr";
 import {MainComponent} from "../main.component";
 import {PusherService} from "../../../services/pusher.service";
+import {ChatMessage} from "../../../model/chat/chat-message";
+import {RtcService} from "../../../services/rtc.service";
 
 @Component({
   selector: 'app-navbar',
@@ -32,7 +34,8 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private componentDestroyed = new Subject<void>();
 
-  constructor(private pusherService: PusherService, private currentUserService: CurrentUserService, private userService: UserService, private toastr: ToastrService) {
+  constructor(private pusherService: PusherService, private currentUserService: CurrentUserService,
+              private userService: UserService, private toastr: ToastrService, private rtcService: RtcService ) {
   }
 
   ngOnInit(): void {
@@ -98,6 +101,16 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
           this.contactAcceptedHandler(data);
         }
     });
+
+    this.pusherService.newChatMessage
+      .pipe(takeUntil(this.componentDestroyed))
+      .subscribe((message: ChatMessage) => {
+        if(message) {
+          if(message.usernameFrom != this.rtcService.getContactUsername()) {
+            this.toastr.info("New message from " + message.usernameFrom);
+          }
+        }
+      });
   }
 
   private contactAcceptedHandler(newContact: User) {
