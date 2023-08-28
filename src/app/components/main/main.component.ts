@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 import {ContactRequest} from "../../model/contact-request/contact-request";
 import {ChatComponent} from "./chat/chat/chat.component";
 import {ToastrService} from "ngx-toastr";
-import {interval, retry, Subscription, switchMap, timer} from "rxjs";
+import {interval, retry, Subject, Subscription, switchMap, takeUntil, timer} from "rxjs";
 import {ContactRequestService} from "../../services/contact-request.service";
 import {ContactRequestsComponent} from "./contact-requests/contact-requests.component";
 import {CallComponent} from "./chat/call/call.component";
@@ -37,6 +37,8 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
 
   hideSidenav: boolean = false;
 
+  private componentDestroyed = new Subject<void>();
+
   constructor(private currentUserService: CurrentUserService, private contactRequestService: ContactRequestService,
               private router: Router, private toastr: ToastrService, private rtcService: RtcService,
               private pusherService: PusherService, private cdr: ChangeDetectorRef) {
@@ -55,7 +57,9 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   initHandlers() {
-    this.pusherService.incomingCall.subscribe((message) => {
+    this.pusherService.incomingCall
+      .pipe(takeUntil(this.componentDestroyed))
+      .subscribe((message) => {
       if(message) {
         console.log("STIGAO CALL ", message)
         this.incomingCallComponent.open(message);
@@ -113,6 +117,9 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
     if(this.requestsSubscription) {
       this.requestsSubscription.unsubscribe();
     }
+
+    this.componentDestroyed.next();
+    this.componentDestroyed.complete();
   }
 
   private setColumnsCall() {

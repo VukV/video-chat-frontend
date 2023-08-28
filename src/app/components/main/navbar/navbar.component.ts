@@ -1,10 +1,10 @@
-import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CurrentUserService} from "../../../services/current-user.service";
 import {AddContactComponent} from "../add-contact/add-contact.component";
 import {UserService} from "../../../services/user.service";
 import {User} from "../../../model/user/user";
 import {LoadingComponent} from "../../utils/loading/loading.component";
-import {retry} from "rxjs";
+import {retry, Subject, takeUntil} from "rxjs";
 import {ToastrService} from "ngx-toastr";
 import {MainComponent} from "../main.component";
 import {PusherService} from "../../../services/pusher.service";
@@ -14,7 +14,7 @@ import {PusherService} from "../../../services/pusher.service";
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements AfterViewInit, OnInit {
+export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
 
   username: string = '';
 
@@ -29,6 +29,8 @@ export class NavbarComponent implements AfterViewInit, OnInit {
 
   @ViewChild(LoadingComponent)
   loadingComponent!: LoadingComponent;
+
+  private componentDestroyed = new Subject<void>();
 
   constructor(private pusherService: PusherService, private currentUserService: CurrentUserService, private userService: UserService, private toastr: ToastrService) {
   }
@@ -65,25 +67,33 @@ export class NavbarComponent implements AfterViewInit, OnInit {
   }
 
   initHandlers() {
-    this.pusherService.isSubscribed.subscribe((isSubscribed) => {
+    this.pusherService.isSubscribed
+      .pipe(takeUntil(this.componentDestroyed))
+      .subscribe((isSubscribed) => {
       if(isSubscribed){
         this.checkForOnlineContacts();
       }
     });
 
-    this.pusherService.onlineContact.subscribe((username) => {
+    this.pusherService.onlineContact
+      .pipe(takeUntil(this.componentDestroyed))
+      .subscribe((username) => {
       if(username) {
         this.contactOnlineHandler(username);
       }
     });
 
-    this.pusherService.offlineContact.subscribe((username) => {
+    this.pusherService.offlineContact
+      .pipe(takeUntil(this.componentDestroyed))
+      .subscribe((username) => {
       if(username) {
         this.contactOfflineHandler(username);
       }
     });
 
-    this.pusherService.acceptedRequest.subscribe((data) => {
+    this.pusherService.acceptedRequest
+      .pipe(takeUntil(this.componentDestroyed))
+      .subscribe((data) => {
       if(data) {
         this.contactAcceptedHandler(data);
       }
@@ -147,6 +157,11 @@ export class NavbarComponent implements AfterViewInit, OnInit {
 
   openSettings() {
     //TODO
+  }
+
+  ngOnDestroy(): void {
+    this.componentDestroyed.next();
+    this.componentDestroyed.complete();
   }
 
 }

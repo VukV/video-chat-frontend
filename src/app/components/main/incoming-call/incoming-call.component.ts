@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input} from '@angular/core';
+import {AfterViewInit, Component, Input, OnDestroy} from '@angular/core';
 import {MainComponent} from "../main.component";
 import {RtcService} from "../../../services/rtc.service";
 import {RTCMessageType} from "../../../model/rtc/rtc-message";
@@ -6,13 +6,14 @@ import {ToastrService} from "ngx-toastr";
 import {PusherService} from "../../../services/pusher.service";
 import {SoundService} from "../../../services/sound.service";
 import {Router} from "@angular/router";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-incoming-call',
   templateUrl: './incoming-call.component.html',
   styleUrls: ['./incoming-call.component.css']
 })
-export class IncomingCallComponent implements AfterViewInit{
+export class IncomingCallComponent implements AfterViewInit, OnDestroy {
 
   displayStyle = "none";
   callerUsername: string = '';
@@ -20,6 +21,8 @@ export class IncomingCallComponent implements AfterViewInit{
 
   @Input()
   mainComponent!: MainComponent;
+
+  private componentDestroyed = new Subject<void>();
 
   constructor(private pusherService: PusherService, private rtcService: RtcService, private toastr: ToastrService,
               private soundService: SoundService, private router: Router) {
@@ -30,7 +33,9 @@ export class IncomingCallComponent implements AfterViewInit{
   }
 
   initListeners() {
-    this.pusherService.hangUp.subscribe((data) => {
+    this.pusherService.hangUp
+      .pipe(takeUntil(this.componentDestroyed))
+      .subscribe((data) => {
       if(data.usernameFrom == this.callerUsername) {
         this.close();
         this.soundService.playCallEnded();
@@ -78,6 +83,11 @@ export class IncomingCallComponent implements AfterViewInit{
       this.displayStyle = "none";
       console.log("CLOSE INCOMING CALL")
     }
+  }
+
+  ngOnDestroy(): void {
+    this.componentDestroyed.next();
+    this.componentDestroyed.complete();
   }
 
 }

@@ -6,6 +6,7 @@ import {RtcService} from "../../../../services/rtc.service";
 import {PusherService} from "../../../../services/pusher.service";
 import {SoundService} from "../../../../services/sound.service";
 import {Router} from "@angular/router";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-call',
@@ -26,6 +27,8 @@ export class CallComponent implements AfterViewInit, OnDestroy {
 
   usingCamera: boolean = false;
   usingMicrophone: boolean = true;
+
+  private componentDestroyed = new Subject<void>();
 
   constructor(private rtcService: RtcService, private pusherService: PusherService, private toastr: ToastrService,
               private soundService: SoundService, private router: Router) {
@@ -186,7 +189,9 @@ export class CallComponent implements AfterViewInit, OnDestroy {
   }
 
   private initHandlers() {
-    this.pusherService.rejectedCall.subscribe((rejected) => {
+    this.pusherService.rejectedCall
+      .pipe(takeUntil(this.componentDestroyed))
+      .subscribe((rejected) => {
       if(rejected && rejected.usernameFrom == this.contactUsername) {
         if(this.rtcService.isActiveCall()) {
           this.callEnded();
@@ -194,13 +199,17 @@ export class CallComponent implements AfterViewInit, OnDestroy {
       }
     });
 
-    this.pusherService.answer.subscribe((message) => {
+    this.pusherService.answer
+      .pipe(takeUntil(this.componentDestroyed))
+      .subscribe((message) => {
       if(message) {
         this.addAnswer(message.data);
       }
     });
 
-    this.pusherService.candidate.subscribe((message) => {
+    this.pusherService.candidate
+      .pipe(takeUntil(this.componentDestroyed))
+      .subscribe((message) => {
       if(message) {
         if(this.peerConnection.remoteDescription) {
           console.log("PUSHER ICE")
@@ -209,11 +218,18 @@ export class CallComponent implements AfterViewInit, OnDestroy {
       }
     });
 
-    this.pusherService.hangUp.subscribe((hangUp) => {
+    this.pusherService.hangUp
+      .pipe(takeUntil(this.componentDestroyed))
+      .subscribe((hangUp) => {
       if(hangUp.usernameFrom == this.contactUsername) {
         this.callEnded();
       }
     });
+  }
+
+  private removeHandlers() {
+    this.componentDestroyed.next();
+    this.componentDestroyed.complete();
   }
 
   leaveCall() {
@@ -241,6 +257,7 @@ export class CallComponent implements AfterViewInit, OnDestroy {
   }
 
   private close() {
+    this.removeHandlers();
     this.soundService.playCallEnded();
     this.router.navigate(['']);
   }
