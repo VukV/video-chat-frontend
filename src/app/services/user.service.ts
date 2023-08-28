@@ -39,7 +39,6 @@ export class UserService {
       })
       .pipe(
         catchError(err => {
-          console.log(err);
           let message = ExceptionMessages.LOGIN_ERROR;
           if(err.error){
             message = err.error.message;

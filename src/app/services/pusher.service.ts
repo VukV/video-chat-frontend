@@ -144,7 +144,6 @@ export class PusherService implements OnDestroy{
     });
 
     this.privateChannel.bind('offer', (message: any) => {
-      console.log("STIGAO OFFER")
       if(this.rtcService.isActiveCall()) {
         return;
       }
@@ -152,10 +151,8 @@ export class PusherService implements OnDestroy{
     });
 
     this.privateChannel.bind('answer', (message: any) => {
-      console.log("STIGAO ANSWER")
       if(message.usernameFrom === this.rtcService.getContactUsername()) {
         this.answerBehavior.next(message);
-        console.log("ISPRAVAN ANSWER")
       }
     });
 
@@ -164,7 +161,6 @@ export class PusherService implements OnDestroy{
     });
 
     this.privateChannel.bind('candidate', (message: any) => {
-      console.log("STIGAO CANDIDATE")
       this.rtcService.addCandidate(message);
       this.candidateBehavior.next(message);
     });
@@ -196,6 +192,8 @@ export class PusherService implements OnDestroy{
     this.answerBehavior.next(false);
     this.candidateBehavior.next(false);
     this.incomingCallBehavior.next(false);
+    this.rejectedCallBehavior.next(false);
+    this.hangUpBehavior.next(false);
   }
 
   ngOnDestroy(): void {

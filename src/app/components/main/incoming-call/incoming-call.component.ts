@@ -51,7 +51,6 @@ export class IncomingCallComponent implements AfterViewInit, OnDestroy {
     this.rtcService.setCallerStatus(false);
     this.rtcService.setVideoCall(videoCall);
 
-    console.log("OTVARA CALL COMPONENT")
     this.router.navigate(['call']);
   }
 
@@ -70,7 +69,6 @@ export class IncomingCallComponent implements AfterViewInit, OnDestroy {
   }
 
   open(message: any) {
-    console.log("INCOMING CALL OPEN")
     this.soundService.playRinging();
 
     this.callerUsername = message.usernameFrom;
@@ -82,7 +80,6 @@ export class IncomingCallComponent implements AfterViewInit, OnDestroy {
     if(this.displayStyle !== "none") {
       this.soundService.stopRinging();
       this.displayStyle = "none";
-      console.log("CLOSE INCOMING CALL")
     }
   }
 

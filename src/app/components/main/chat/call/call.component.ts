@@ -13,7 +13,7 @@ import {Subject, takeUntil} from "rxjs";
   templateUrl: './call.component.html',
   styleUrls: ['./call.component.css']
 })
-export class CallComponent implements AfterViewInit, OnDestroy {
+export class CallComponent implements AfterViewInit {
 
   private localStream: any;
   private remoteStream: any;
@@ -74,7 +74,6 @@ export class CallComponent implements AfterViewInit, OnDestroy {
 
   private async createPeerConnection() {
     this.peerConnection = new RTCPeerConnection(environment.rtc.servers);
-    console.log("NAPRAVIO PEER CONNECTION");
 
     this.remoteStream = new MediaStream();
     this.contactVideo.nativeElement.srcObject = this.remoteStream;
@@ -118,7 +117,6 @@ export class CallComponent implements AfterViewInit, OnDestroy {
     if (this.peerConnection && this.peerConnection.iceConnectionState !== 'closed') {
       for(let candidate of this.rtcService.getCandidates()) {
         if(candidate.usernameFrom == this.contactUsername) {
-          console.log("HANDLE ICE")
           this.addIceCandidate(candidate.data);
         }
       }
@@ -134,9 +132,6 @@ export class CallComponent implements AfterViewInit, OnDestroy {
     await this.peerConnection.setLocalDescription(offer);
 
     this.sendMessage(RTCMessageType.OFFER, offer);
-    console.log("POSLAO OFFER");
-
-    //todo start counter
   }
 
   private async createAnswer(offer: any) {
@@ -147,21 +142,17 @@ export class CallComponent implements AfterViewInit, OnDestroy {
     await this.peerConnection.setLocalDescription(answer);
 
     this.sendMessage(RTCMessageType.ANSWER, answer);
-    console.log("POSLAO ANSWER")
   }
 
   private async addAnswer(answer: any) {
     if(!this.peerConnection.currentRemoteDescription) {
-      console.log("DODAJE ANSWER (REMOTE DESC)")
       this.peerConnection.setRemoteDescription(answer);
     }
   }
 
   private async addIceCandidate(candidate: any) {
     if(this.peerConnection) {
-      console.log("POKUSAVA DA DODA ICE ", candidate)
       this.peerConnection.addIceCandidate(candidate);
-      console.log("DODAO ICE")
     }
   }
 
@@ -213,7 +204,6 @@ export class CallComponent implements AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.componentDestroyed))
       .subscribe((message) => {
         if(message) {
-          console.log("SUB NA ANSWER ", message)
           this.addAnswer(message.data);
         }
     });
@@ -223,7 +213,6 @@ export class CallComponent implements AfterViewInit, OnDestroy {
       .subscribe((message) => {
         if(message) {
           if(this.peerConnection.remoteDescription) {
-            console.log("PUSHER ICE")
             this.addIceCandidate(message.data);
           }
         }
@@ -265,7 +254,7 @@ export class CallComponent implements AfterViewInit, OnDestroy {
     this.clearHandlers();
 
     this.peerConnection.close();
-    console.log("ODRADJEN PEER CONNECTION CLOSE")
+
     this.rtcService.clearCandidates();
     this.rtcService.setActiveCall(false);
   }
@@ -279,10 +268,6 @@ export class CallComponent implements AfterViewInit, OnDestroy {
   callEnded() {
     this.disconnect();
     this.close();
-  }
-
-  ngOnDestroy(): void {
-    console.log("POZVAN DESTROY")
   }
 
 }
