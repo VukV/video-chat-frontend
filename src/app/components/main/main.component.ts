@@ -3,7 +3,7 @@ import {CurrentUserService} from "../../services/current-user.service";
 import {Router} from "@angular/router";
 import {ContactRequest} from "../../model/contact-request/contact-request";
 import {ToastrService} from "ngx-toastr";
-import {interval, retry, Subject, Subscription, switchMap, takeUntil, timer} from "rxjs";
+import {Subject, Subscription, switchMap, takeUntil, timer} from "rxjs";
 import {ContactRequestService} from "../../services/contact-request.service";
 import {ContactRequestsComponent} from "./contact-requests/contact-requests.component";
 import {RtcService} from "../../services/rtc.service";

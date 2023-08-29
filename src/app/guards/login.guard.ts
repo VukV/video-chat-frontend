@@ -8,8 +8,6 @@ export const loginGuard: CanActivateFn = (route, state) => {
   const currentUserService: CurrentUserService = inject(CurrentUserService);
   const router: Router = inject(Router);
 
-  //return true;
-
   let token = currentUserService.getToken();
   if(!token){
     router.navigate(['/login']);

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {CurrentUserService} from "./current-user.service";
 import {environment} from "../../environments/environment";
-import {User} from "../model/user/user";
 import {catchError, Observable, throwError} from "rxjs";
 import {ContactRequest} from "../model/contact-request/contact-request";
 import {ExceptionMessages} from "../model/exception-messages";

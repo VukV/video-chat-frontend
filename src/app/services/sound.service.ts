@@ -23,7 +23,6 @@ export class SoundService {
 
   playRinging() {
     this.ringingAudio = this.loadAudio('/assets/sounds/ringtone.mp3');
-
     this.ringingAudio.addEventListener("ended", () => this.playRinging());
 
     this.ringingAudio.play();
@@ -33,11 +32,6 @@ export class SoundService {
     this.ringingAudio.removeEventListener("ended", () => this.playRinging());
     this.ringingAudio.pause();
     this.ringingAudio.currentTime = 0;
-  }
-
-  private replayRinging() {
-    this.ringingAudio.currentTime = 0;
-    this.ringingAudio.play();
   }
 
 }
