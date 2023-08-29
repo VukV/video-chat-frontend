@@ -37,6 +37,7 @@ export class IncomingCallComponent implements AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.componentDestroyed))
       .subscribe((data) => {
         if(data.usernameFrom == this.callerUsername) {
+          this.pusherService.resetCall();
           this.close();
           this.soundService.playCallEnded();
         }
@@ -57,6 +58,7 @@ export class IncomingCallComponent implements AfterViewInit, OnDestroy {
   rejectCall() {
     this.rtcService.sendMessage(RTCMessageType.REJECT, null, this.callerUsername).subscribe({
       complete: () => {
+        this.pusherService.resetCall();
         this.close();
       },
       error: (error) => {

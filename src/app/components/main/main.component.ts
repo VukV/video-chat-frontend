@@ -34,8 +34,6 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(ContactRequestsComponent)
   contactRequestsComponent!: ContactRequestsComponent;
 
-  hideSidenav: boolean = false;
-
   private componentDestroyed = new Subject<void>();
 
   constructor(private currentUserService: CurrentUserService, private contactRequestService: ContactRequestService,
@@ -48,6 +46,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
       this.isLoggedIn = loggedIn;
     });
 
+    this.pusherService.subscribeToChannels();
     this.getUserRequests();
   }
 
@@ -108,6 +107,7 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   logout() {
+    this.pusherService.disconnect();
     this.currentUserService.logout();
   }
 

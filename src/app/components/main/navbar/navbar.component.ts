@@ -68,7 +68,7 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
         this.loadingComponent.stop();
 
         this.pusherService.initChannelList(this.offlineContacts);
-        this.pusherService.subscribeToChannels();
+        this.pusherService.subscribeToContactChannels();
       }
     });
   }

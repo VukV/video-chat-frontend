@@ -62,8 +62,6 @@ export class PusherService implements OnDestroy{
         });
       }
     });
-
-    this.initPusher();
   }
 
   initPusher() {
@@ -101,9 +99,10 @@ export class PusherService implements OnDestroy{
   }
 
   subscribeToChannels() {
+    this.initPusher();
+
     if(!this.presenceChannel) {
       this.presenceChannel = this.subscribeToPresenceChannel(this.currentUserService.getUserId());
-      this.subscribeToContactChannels();
     }
 
     if(!this.privateChannel) {
@@ -115,7 +114,9 @@ export class PusherService implements OnDestroy{
     }
   }
 
-  private async subscribeToContactChannels() {
+  async subscribeToContactChannels() {
+    this.initPusher();
+
     for(let contactId of this.channels) {
       this.subscribeToPresenceChannel(contactId);
     }
@@ -180,12 +181,14 @@ export class PusherService implements OnDestroy{
     this.incomingCallBehavior.next(false);
   }
 
-  private sendLastOnline() {
+  disconnect() {
+    this.resetChannelBehavior();
 
-  }
+    this.presenceChannel = null;
+    this.privateChannel = null;
 
-  private disconnect() {
     this.pusher.disconnect();
+    this.bind = false;
   }
 
   resetCall() {
@@ -196,8 +199,14 @@ export class PusherService implements OnDestroy{
     this.hangUpBehavior.next(false);
   }
 
+  resetChannelBehavior() {
+    this.subscribedBehavior.next(false);
+    this.onlineBehavior.next(false);
+    this.offlineBehavior.next(false);
+    this.acceptedRequestBehavior.next(false);
+  }
+
   ngOnDestroy(): void {
-    this.sendLastOnline();
     this.disconnect();
   }
 }
