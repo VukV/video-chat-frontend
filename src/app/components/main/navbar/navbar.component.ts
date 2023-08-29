@@ -10,6 +10,7 @@ import {MainComponent} from "../main.component";
 import {PusherService} from "../../../services/pusher.service";
 import {ChatMessage} from "../../../model/chat/chat-message";
 import {RtcService} from "../../../services/rtc.service";
+import {SettingsComponent} from "./settings/settings.component";
 
 @Component({
   selector: 'app-navbar',
@@ -28,6 +29,9 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
 
   @ViewChild(AddContactComponent)
   addContactComponent!: AddContactComponent;
+
+  @ViewChild(SettingsComponent)
+  settingsComponent!: SettingsComponent;
 
   @ViewChild(LoadingComponent)
   loadingComponent!: LoadingComponent;
@@ -169,7 +173,7 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   openSettings() {
-    //TODO
+    this.settingsComponent.open();
   }
 
   ngOnDestroy(): void {

@@ -1,0 +1,26 @@
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Media Settings</h5>
+        <button type="button" class="btn-close" (click)="close()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="media-div">
+          <label for="cameraSelect">Select Camera:</label>
+          <select id="cameraSelect" class="form-select" [(ngModel)]="selectedCamera" (change)="updateDevices()">
+            <option *ngFor="let camera of cameras" [value]="camera.deviceId">{{ camera.label }}</option>
+          </select>
+        </div>
+
+        <div class="media-div">
+          <label for="microphoneSelect">Select Microphone:</label>
+          <select id="microphoneSelect" class="form-select" [(ngModel)]="selectedMicrophone" (change)="updateDevices()">
+            <option *ngFor="let microphone of microphones" [value]="microphone.deviceId">{{ microphone.label }}</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

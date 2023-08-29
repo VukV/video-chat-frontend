@@ -2,15 +2,14 @@ import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChil
 import {CurrentUserService} from "../../services/current-user.service";
 import {Router} from "@angular/router";
 import {ContactRequest} from "../../model/contact-request/contact-request";
-import {ChatComponent} from "./chat/chat/chat.component";
 import {ToastrService} from "ngx-toastr";
 import {interval, retry, Subject, Subscription, switchMap, takeUntil, timer} from "rxjs";
 import {ContactRequestService} from "../../services/contact-request.service";
 import {ContactRequestsComponent} from "./contact-requests/contact-requests.component";
-import {CallComponent} from "./chat/call/call.component";
 import {RtcService} from "../../services/rtc.service";
 import {IncomingCallComponent} from "./incoming-call/incoming-call.component";
 import {PusherService} from "../../services/pusher.service";
+import {ChatComponent} from "./video-chat/chat/chat.component";
 
 @Component({
   selector: 'app-main',
@@ -119,18 +118,6 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.componentDestroyed.next();
     this.componentDestroyed.complete();
-  }
-
-  private setColumnsCall() {
-    //todo delete
-    this.hideSidenav = true;
-    this.cdr.detectChanges();
-  }
-
-  private resetColumns() {
-    //todo delete
-    this.hideSidenav = false;
-    this.cdr.detectChanges();
   }
 
 }

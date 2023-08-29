@@ -30,8 +30,12 @@ export class RtcService {
       video: {
         width: { min:640, ideal:1920, max:1920 },
         height: { min:480, ideal:1080, max:1080 },
+        deviceId: ''
       },
-      audio: true
+      audio: {
+        echoCancellation: true,
+        deviceId: ''
+      }
     },
     servers: {
       iceServers: [
@@ -132,6 +136,19 @@ export class RtcService {
 
   getServers() {
     return this.rtcConfig.servers;
+  }
+
+  updateMediaDevices(selectedVideoDeviceId: string, selectedAudioDeviceId: string) {
+    this.rtcConfig.constraints.video.deviceId = selectedVideoDeviceId;
+    this.rtcConfig.constraints.audio.deviceId = selectedAudioDeviceId;
+  }
+
+  getSelectedMicrophone() {
+    return this.rtcConfig.constraints.audio.deviceId;
+  }
+
+  getSelectedCamera() {
+    return this.rtcConfig.constraints.video.deviceId;
   }
 
 }

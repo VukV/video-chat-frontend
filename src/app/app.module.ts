@@ -12,15 +12,16 @@ import {HttpClientModule} from "@angular/common/http";
 import {NgxSpinnerModule} from "ngx-spinner";
 import { LoadingComponent } from './components/utils/loading/loading.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import { HomeComponent } from './components/main/chat/home/home.component';
-import { ChatComponent } from './components/main/chat/chat/chat.component';
 import { AddContactComponent } from './components/main/add-contact/add-contact.component';
 import {NgxPaginationModule} from "ngx-pagination";
 import {ToastrModule} from "ngx-toastr";
 import { ContactRequestsComponent } from './components/main/contact-requests/contact-requests.component';
-import { CallComponent } from './components/main/chat/call/call.component';
 import {PusherService} from "./services/pusher.service";
 import { IncomingCallComponent } from './components/main/incoming-call/incoming-call.component';
+import { SettingsComponent } from './components/main/navbar/settings/settings.component';
+import {HomeComponent} from "./components/main/video-chat/home/home.component";
+import {ChatComponent} from "./components/main/video-chat/chat/chat.component";
+import {CallComponent} from "./components/main/video-chat/call/call.component";
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { IncomingCallComponent } from './components/main/incoming-call/incoming-
     AddContactComponent,
     ContactRequestsComponent,
     CallComponent,
-    IncomingCallComponent
+    IncomingCallComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,15 @@
+h5 {
+  color: var(--chat-blue-darker);
+}
+
+.modal {
+  background-color: rgba(0, 0, 0, 0.35);
+}
+
+.modal-content {
+  border-color: var(--chat-blue-darker);
+}
+
+.media-div {
+  margin-bottom: 20px;
+}
