@@ -142,6 +142,7 @@ export class PusherService implements OnDestroy{
 
     this.privateChannel.bind('accepted_request', (data: any) => {
       this.acceptedRequestBehavior.next(data);
+      this.resetContactRequestBehavior();
     });
 
     this.privateChannel.bind('offer', (message: any) => {
@@ -206,7 +207,7 @@ export class PusherService implements OnDestroy{
     this.acceptedRequestBehavior.next(false);
   }
 
-  resetContactRequestBehavior() {
+  private resetContactRequestBehavior() {
     this.acceptedRequestBehavior.next(false);
   }
 

@@ -116,8 +116,6 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
       this.requestsSubscription.unsubscribe();
     }
 
-    this.pusherService.resetContactRequestBehavior();
-
     this.componentDestroyed.next();
     this.componentDestroyed.complete();
   }
