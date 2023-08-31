@@ -6,7 +6,7 @@ export const environment = {
   chatUrl: "http://localhost:8080/api/chat",
 
   pusher: {
-    key: "",
+    key: "f8cd383efe2beeca7536",
     cluster: "eu",
     authUrl: "http://localhost:8080/api/auth/pusher"
   },
