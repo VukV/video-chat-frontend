@@ -8,7 +8,7 @@ export const environment = {
   pusher: {
     key: "f8cd383efe2beeca7536",
     cluster: "eu",
-    authUrl: "http://localhost:8080/api/auth/pusher"
+    authUrl: "https://video-chat-backend-5c5f.onrender.com/api/auth/pusher"
   },
 
   rtc: {
