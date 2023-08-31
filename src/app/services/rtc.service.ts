@@ -36,13 +36,6 @@ export class RtcService {
         echoCancellation: true,
         deviceId: ''
       }
-    },
-    servers: {
-      iceServers: [
-        {
-          urls: environment.rtc.iceServers
-        }
-      ]
     }
   };
 
@@ -132,10 +125,6 @@ export class RtcService {
 
   getConstraints() {
     return this.rtcConfig.constraints;
-  }
-
-  getServers() {
-    return this.rtcConfig.servers;
   }
 
   updateMediaDevices(selectedVideoDeviceId: string, selectedAudioDeviceId: string) {

@@ -206,6 +206,10 @@ export class PusherService implements OnDestroy{
     this.acceptedRequestBehavior.next(false);
   }
 
+  resetContactRequestBehavior() {
+    this.acceptedRequestBehavior.next(false);
+  }
+
   ngOnDestroy(): void {
     this.disconnect();
   }

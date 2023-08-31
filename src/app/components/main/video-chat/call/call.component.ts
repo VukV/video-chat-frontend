@@ -67,13 +67,15 @@ export class CallComponent implements AfterViewInit {
 
     try {
       this.localVideo.nativeElement.srcObject = this.localStream;
+      this.localVideo.nativeElement.volume = 0;
+      this.localVideo.nativeElement.muted = 0;
     } catch(error) {
       this.toastr.error('Error accessing media devices.');
     }
   }
 
   private async createPeerConnection() {
-    this.peerConnection = new RTCPeerConnection(this.rtcService.getServers());
+    this.peerConnection = new RTCPeerConnection({ iceServers: environment.rtc.iceServers });
 
     this.remoteStream = new MediaStream();
     this.contactVideo.nativeElement.srcObject = this.remoteStream;
