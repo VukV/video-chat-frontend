@@ -7,3 +7,6 @@ The goal of the project was to make an Angular application that uses WebRTC for 
 Pusher is added to the project for real time socket communication.
 
 This is a part of the fullstack project. Backend side here: https://github.com/VukV/video-chat-backend
+
+
+![App Examples](screenshots/screenshots.png?raw=true "Title")
