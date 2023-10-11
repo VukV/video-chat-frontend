@@ -6,8 +6,8 @@ export const environment = {
   chatUrl: "https://video-chat-backend-5c5f.onrender.com/api/chat",
 
   pusher: {
-    key: "f8cd383efe2beeca7536",
-    cluster: "eu",
+    key: "",
+    cluster: "",
     authUrl: "https://video-chat-backend-5c5f.onrender.com/api/auth/pusher"
   },
 
